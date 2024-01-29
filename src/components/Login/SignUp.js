@@ -4,33 +4,24 @@ import * as Yup from "yup";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
+import "./Login.css";
 
-function SIgnUp() {
+function SignUp() {
   const history = useNavigate();
-  // Define validation schema
-  const navigateToSignUP = () => {
-    history("/sign-up");
-  };
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string().required("Password is required"),
   });
 
-  // Define initial values
   const initialValues = {
     email: "",
     password: "",
   };
-  // Handle form submission
-  const handleSubmit = (values, { setSubmitting }) => {
-    console.log("values", values);
-    // You can perform your login logic here
 
+  const handleSubmit = (values, { setSubmitting }) => {
     createUserWithEmailAndPassword(auth, values.email, values.password)
       .then((userCredential) => {
-        // const user = userCredential.user;
         history("/");
-        // console.log("userCre", userCredential);
       })
       .catch((e) => {
         console.log("error", e.code, e.message);
@@ -38,35 +29,49 @@ function SIgnUp() {
   };
 
   return (
-    <div>
-      <h2>Sign Screen</h2>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <div>
-              <label htmlFor="email">Email</label>
-              <Field type="email" id="email" name="email" />
-              <ErrorMessage name="email" component="div" />
-            </div>
-            <div>
-              <label htmlFor="password">Password</label>
-              <Field type="password" id="password" name="password" />
-              <ErrorMessage name="password" component="div" />
-            </div>
-            <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Logging in..." : "Login"}
-            </button>
-          </Form>
-        )}
-      </Formik>
-      <div onClick={navigateToSignUP()}>
-        <h1>dont have account please do Sign up</h1>
+    <div className="login-container">
+      <div className="login-content">
+        <h2 className="login-title">Sign In</h2>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting }) => (
+            <Form className="w-full max-w-sm">
+              <Field
+                className="login-input"
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email"
+              />
+              <div className="error-message">
+                <ErrorMessage name="email" />
+              </div>
+              <Field
+                className="login-input"
+                type="password"
+                placeholder="Password"
+                id="password"
+                name="password"
+              />
+              <div className="error-message">
+                <ErrorMessage name="password" />
+              </div>
+              <button
+                type="submit"
+                className="login-button"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Signing in..." : "Sign In"}
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );
 }
-export default SIgnUp;
+
+export default SignUp;

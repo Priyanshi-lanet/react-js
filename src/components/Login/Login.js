@@ -1,69 +1,84 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../firebase";
+import "./Login.css";
 const Login = () => {
   const history = useNavigate();
-  // Define validation schema
-  const navigateToSignUP = () => {
+
+  const navigateToSignUp = () => {
     history("/sign-up", {
       replace: true,
     });
   };
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string().required("Password is required"),
   });
 
-  // Define initial values
   const initialValues = {
     email: "",
     password: "",
   };
-  // Handle form submission
-  const handleSubmit = (values, { setSubmitting }) => {
-    // You can perform your login logic here
 
+  const handleSubmit = (values, { setSubmitting }) => {
     signInWithEmailAndPassword(auth, values.email, values.password)
-      .then((useCredential) => {
+      .then((userCredential) => {
         history("/all-meetup");
-        console.log("userCre", useCredential);
+        console.log("userCredential", userCredential);
       })
       .catch((error) => {
-        console.log("error", error);
+        console.error("error", error);
       });
   };
 
   return (
-    <div>
-      <h2>Login Screen</h2>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <div>
-              <label htmlFor="email">Email</label>
-              <Field type="email" id="email" name="email" />
-              <ErrorMessage name="email" component="div" />
-            </div>
-            <div>
-              <label htmlFor="password">Password</label>
-              <Field type="password" id="password" name="password" />
-              <ErrorMessage name="password" component="div" />
-            </div>
-            <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Logging in..." : "Login"}
-            </button>
-          </Form>
-        )}
-      </Formik>
-      <div onClick={navigateToSignUP()}>
-        <h1>dont have account please do Sign up</h1>
+    <div className="login-container">
+      <div className="login-content">
+        <h2 className="login-title">Log In</h2>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting }) => (
+            <Form className="w-full max-w-sm">
+              <input
+                className="login-input"
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email"
+              />
+              <div className="error-message">
+                <ErrorMessage name="email" />
+              </div>
+              <input
+                className="login-input"
+                type="password"
+                placeholder="Password"
+                id="password"
+                name="password"
+              />
+              <div className="error-message">
+                <ErrorMessage name="password" />
+              </div>
+              <button
+                className="login-button"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Loging in..." : "Log In"}
+              </button>
+              <div className="signup-link" onclick={navigateToSignUp}>
+                Don't have an account? <a href="/sign-up">Sign Up</a>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );

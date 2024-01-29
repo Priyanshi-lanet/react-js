@@ -15,8 +15,8 @@ function App() {
           <Route path="/" exact element={<Login />} />
           <Route path="/all-meetup" element={<AllMeetups />} />
           <Route path="/new-meetup" element={<NewMeetup />} />
-          <Route path="/favourite" element={<Favourites />} />
           <Route path="/sign-up" element={<SIgnUp />} />
+          <Route path="/favourite" element={<Favourites />} />
         </Routes>
       </BrowserRouter>
     </div>
