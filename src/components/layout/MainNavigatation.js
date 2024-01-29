@@ -10,7 +10,7 @@ function MainNavigatation() {
       <div className="logo">ReactMeet Hooks</div>
       <nav>
         <ul>
-          <Link className="header2" to="/">
+          <Link className="header2" to="/all-meetup">
             Meetups
           </Link>
 
