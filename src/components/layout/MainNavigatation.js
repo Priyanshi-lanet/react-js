@@ -14,6 +14,7 @@ function MainNavigation() {
   return (
     showNavigation && (
       <header className="header">
+        <div className="logo">Voyage chronicle</div>
         <nav>
           <ul>
             <li>

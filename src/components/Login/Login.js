@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -46,7 +46,7 @@ const Login = () => {
         >
           {({ isSubmitting }) => (
             <Form className="w-full max-w-sm">
-              <input
+              <Field
                 className="login-input"
                 type="email"
                 id="email"
@@ -56,7 +56,7 @@ const Login = () => {
               <div className="error-message">
                 <ErrorMessage name="email" />
               </div>
-              <input
+              <Field
                 className="login-input"
                 type="password"
                 placeholder="Password"
@@ -73,7 +73,7 @@ const Login = () => {
               >
                 {isSubmitting ? "Loging in..." : "Log In"}
               </button>
-              <div className="signup-link" onclick={navigateToSignUp}>
+              <div className="signup-link" onClick={navigateToSignUp}>
                 Don't have an account? <a href="/sign-up">Sign Up</a>
               </div>
             </Form>

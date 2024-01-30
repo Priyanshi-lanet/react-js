@@ -11,8 +11,15 @@ function Newmeetups(props) {
     description: "",
   };
 
+  const editValues = props.details.data;
+  const isEditMode = props.edit;
   const onSubmit = (values, { resetForm }) => {
-    props.onAddMeetup(values);
+    if (isEditMode) {
+      props.onUpdateMeetup(values);
+    } else {
+      // Handle add logic for add mode
+      props.onAddMeetup(values);
+    }
     resetForm();
   };
 
@@ -26,9 +33,10 @@ function Newmeetups(props) {
   return (
     <div className="form">
       <Formik
-        initialValues={initialValues}
+        initialValues={isEditMode ? editValues : initialValues}
         onSubmit={onSubmit}
         validationSchema={validationSchema}
+        enableReinitialize={true}
       >
         {({ errors, touched }) => (
           <Form>
@@ -68,8 +76,10 @@ function Newmeetups(props) {
               )}
             </div>
 
-            <div className="actions">
-              <button type="submit">Add Meetup</button>
+            <div>
+              <button type="submit">
+                {isEditMode ? "Update Meetup" : "Add Meetup"}
+              </button>
             </div>
           </Form>
         )}
