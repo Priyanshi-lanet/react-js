@@ -43,21 +43,28 @@ function Newmeetups(props) {
                 Meetup Title
               </label>
               <Field type="text" id="title" name="title" />
-              {errors.title && touched.title && <div>{errors.title}</div>}
+
+              {errors.title && touched.title && (
+                <div className="error-message">{errors.title}</div>
+              )}
             </div>
             <div className="control">
               <label htmlFor="image" style={{ color: "grey" }}>
                 Meetup Image
               </label>
               <Field type="url" id="image" name="image" />
-              {errors.image && touched.image && <div>{errors.image}</div>}
+              {errors.image && touched.image && (
+                <div className="error-message">{errors.image}</div>
+              )}
             </div>
             <div className="control">
               <label htmlFor="address" style={{ color: "grey" }}>
                 Address
               </label>
               <Field type="text" id="address" name="address" />
-              {errors.address && touched.address && <div>{errors.address}</div>}
+              {errors.address && touched.address && (
+                <div className="error-message">{errors.address}</div>
+              )}
             </div>
             <div className="control">
               <label htmlFor="description" style={{ color: "grey" }}>
@@ -70,11 +77,11 @@ function Newmeetups(props) {
                 rows="5"
               />
               {errors.description && touched.description && (
-                <div>{errors.description}</div>
+                <div className="error-message">{errors.description}</div>
               )}
             </div>
 
-            <div>
+            <div className="actions">
               <button type="submit">
                 {isEditMode ? "Update Meetup" : "Add Meetup"}
               </button>

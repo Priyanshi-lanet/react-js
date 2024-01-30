@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import MeetupList from "../components/meetups/MeetupList";
-
+import Loading from "../components/Loader/Loading";
 function AllMeetups() {
-  const [Loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [loadedMeetups, setloadedMeetups] = useState([]);
   useEffect(() => {
     setLoading(true);
@@ -24,17 +24,8 @@ function AllMeetups() {
       });
   }, []);
 
-  if (Loading) {
-    return (
-      <section>
-        <p>Loading....</p>
-      </section>
-    );
-  }
   return (
-    <div>
-      <MeetupList meetups={loadedMeetups} />
-    </div>
+    <div>{loading ? <Loading /> : <MeetupList meetups={loadedMeetups} />}</div>
   );
 }
 export default AllMeetups;
