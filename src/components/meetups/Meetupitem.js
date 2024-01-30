@@ -35,49 +35,43 @@ function Meetupitem(props) {
   };
 
   return (
-    <div>
-      <div
-        style={{
-          backgroundColor: "black",
-          padding: "10px",
-          borderRadius: "5px",
-        }}
-        className="card"
-      >
-        <img src={props.image} alt="Card" className="card-image" />
-        <div className="card-content">
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <div>
-              <h2 className="card-title">{props.title}</h2>
-            </div>
-            <div>
-              <button
-                style={{
-                  backgroundColor: "black",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-                onClick={toggleStatus}
-              >
-                {itemISFavourite ? (
-                  <MdFavorite style={{ stroke: "none", color: "grey" }} />
-                ) : (
-                  <MdFavoriteBorder style={{ stroke: "none", color: "grey" }} />
-                )}
-                {
-                  <CiEdit
-                    onClick={() => handleClick(props)}
-                    style={{ marginLeft: "5", stroke: "none", color: "grey" }}
-                  />
-                }
-              </button>
-            </div>
+    <div
+      style={{ backgroundColor: "grey", padding: "10px", borderRadius: "5px" }}
+      className="card"
+    >
+      <img src={props.image} alt="Card" className="card-image" />
+      <div className="card-content">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div>
+            <h2 className="card-title">{props.title}</h2>
+          </div>
+          <div>
+            <button
+              style={{
+                backgroundColor: "grey",
+                border: "none",
+                cursor: "pointer",
+              }}
+              onClick={toggleStatus}
+            >
+              {itemISFavourite ? (
+                <MdFavorite style={{ stroke: "none", color: "black" }} />
+              ) : (
+                <MdFavoriteBorder style={{ stroke: "none", color: "black" }} />
+              )}
+              {
+                <CiEdit
+                  onClick={() => handleClick(props)}
+                  style={{ marginLeft: "5", stroke: "none", color: "black" }}
+                />
+              }
+            </button>
           </div>
         </div>
       </div>

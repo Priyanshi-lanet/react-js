@@ -3,3 +3,12 @@
   margin: 0;
   padding: 0;
 }
+.color {
+  background-color: "pink";
+}
+.color1 {
+  background-color: "grey";
+}
+.newColor {
+  color: red !important;
+}
