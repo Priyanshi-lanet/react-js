@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Newmeetups from "../components/meetups/Newmeetups";
 function NewMeetup(props) {
   const location = useLocation();
-  console.log("inside MEet Up ::", location);
   const history = useNavigate();
 
   function addMeetupHandler(meetupData) {
@@ -17,7 +16,7 @@ function NewMeetup(props) {
         },
       }
     ).then(() => {
-      history("/");
+      history("/all-meetup");
     });
   }
   function updateMeetupHandler(updatedMeetupData) {
@@ -40,8 +39,8 @@ function NewMeetup(props) {
       <Newmeetups
         onAddMeetup={addMeetupHandler}
         onUpdateMeetup={updateMeetupHandler}
-        details={location.state}
-        edit={location.state.edit ? true : false}
+        details={location.state ? location.state : ""}
+        edit={location.state && location.state.edit}
       />
     </section>
   );

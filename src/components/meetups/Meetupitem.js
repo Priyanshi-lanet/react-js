@@ -23,8 +23,6 @@ function Meetupitem(props) {
     }
   }
   const handleClick = (data) => {
-    console.log("dd", data);
-    console.log("Div clicked!");
     history("/new-meetup", {
       state: {
         data: data,

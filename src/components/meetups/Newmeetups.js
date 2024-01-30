@@ -10,9 +10,8 @@ function Newmeetups(props) {
     address: "",
     description: "",
   };
-
-  const editValues = props.details.data;
-  const isEditMode = props.edit;
+  const editValues = props?.details?.data;
+  const isEditMode = props?.edit;
   const onSubmit = (values, { resetForm }) => {
     if (isEditMode) {
       props.onUpdateMeetup(values);
@@ -29,7 +28,6 @@ function Newmeetups(props) {
     address: Yup.string().required("Address is required"),
     description: Yup.string().required("Description is required"),
   });
-
   return (
     <div className="form">
       <Formik

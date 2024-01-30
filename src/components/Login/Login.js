@@ -28,7 +28,6 @@ const Login = () => {
     signInWithEmailAndPassword(auth, values.email, values.password)
       .then((userCredential) => {
         history("/all-meetup");
-        console.log("userCredential", userCredential);
       })
       .catch((error) => {
         console.error("error", error);

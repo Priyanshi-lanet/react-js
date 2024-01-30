@@ -23,8 +23,8 @@ function SignUp() {
       .then((userCredential) => {
         history("/");
       })
-      .catch((e) => {
-        console.log("error", e.code, e.message);
+      .catch((error) => {
+        console.error("error", error);
       });
   };
 
