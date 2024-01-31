@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from "react";
 import MeetupList from "../components/meetups/MeetupList";
 import Loading from "../components/Loader/Loading";
+import { UserAuth } from "../components/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 function AllMeetups() {
+  const navigate = useNavigate();
+  const { user, logout } = UserAuth();
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const [loading, setLoading] = useState(false);
   const [loadedMeetups, setloadedMeetups] = useState([]);
   useEffect(() => {
@@ -25,7 +37,17 @@ function AllMeetups() {
   }, []);
 
   return (
-    <div>{loading ? <Loading /> : <MeetupList meetups={loadedMeetups} />}</div>
+    <div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <p style={{ color: "pink" }}>user Email: {user && user.email}</p>
+          <button onClick={handleLogout}>Logout</button>
+          <MeetupList meetups={loadedMeetups} />
+        </>
+      )}
+    </div>
   );
 }
 export default AllMeetups;

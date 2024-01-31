@@ -5,12 +5,15 @@ import Favourites from "./Pages/Favourites";
 import MainNavigatation from "./components/layout/MainNavigatation";
 import Login from "./components/Login/Login";
 import SIgnUp from "./components/Login/SignUp";
-
+import "./components/meetups/card.css";
 function App() {
   return (
     <div>
       <BrowserRouter>
-        <MainNavigatation />
+        <header>
+          <div className="logo">Voyage chronicle</div>
+        </header>
+        <MainNavigatation className="navigation" />
         <Routes>
           <Route path="/" exact element={<Login />} />
           <Route path="/all-meetup" element={<AllMeetups />} />

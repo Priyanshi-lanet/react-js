@@ -5,8 +5,9 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import "./Login.css";
-
+import { UserAuth } from "../context/AuthContext";
 function SignUp() {
+  const { createUser } = UserAuth();
   const history = useNavigate();
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -18,14 +19,20 @@ function SignUp() {
     password: "",
   };
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    createUserWithEmailAndPassword(auth, values.email, values.password)
-      .then((userCredential) => {
-        history("/");
-      })
-      .catch((error) => {
-        console.error("error", error);
-      });
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      await createUser(values.email, values.password);
+      history("/all-meetup");
+    } catch (error) {
+      console.log(error);
+    }
+    //    // method: 2;  createUserWithEmailAndPassword(auth, values.email, values.password)
+    //   .then((userCredential) => {
+    //     history("/");
+    //   })
+    //   .catch((error) => {
+    //     console.error("error", error);
+    //   });
   };
 
   return (

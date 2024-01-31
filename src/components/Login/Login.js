@@ -4,8 +4,10 @@ import * as Yup from "yup";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
+import { UserAuth } from "../context/AuthContext";
 import "./Login.css";
 const Login = () => {
+  const { signIn } = UserAuth();
   const history = useNavigate();
 
   const navigateToSignUp = () => {
@@ -24,14 +26,20 @@ const Login = () => {
     password: "",
   };
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    signInWithEmailAndPassword(auth, values.email, values.password)
-      .then((userCredential) => {
-        history("/all-meetup");
-      })
-      .catch((error) => {
-        console.error("error", error);
-      });
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      await signIn(values.email, values.password);
+      history("/all-meetup");
+    } catch (error) {
+      console.log(error);
+    }
+    // method: 2; // signInWithEmailAndPassword(auth, values.email, values.password)
+    //   .then((userCredential) => {
+    //     history("/all-meetup");
+    //   })
+    //   .catch((error) => {
+    //     console.error("error", error);
+    //   });
   };
 
   return (
@@ -73,7 +81,10 @@ const Login = () => {
                 {isSubmitting ? "Loging in..." : "Log In"}
               </button>
               <div className="signup-link" onClick={navigateToSignUp}>
-                Don't have an account? <a href="/sign-up">Sign Up</a>
+                Don't have an account?{" "}
+                <a href="/sign-up" className=".signUp">
+                  Sign Up
+                </a>
               </div>
             </Form>
           )}

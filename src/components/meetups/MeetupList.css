@@ -12,3 +12,7 @@
 .newColor {
   color: red !important;
 }
+.navigation ul {
+  display: flex;
+  list-style-type: none;
+}
