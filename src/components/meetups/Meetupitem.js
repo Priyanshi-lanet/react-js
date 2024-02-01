@@ -5,6 +5,7 @@ import FavouriteContext from "../store/fav-context";
 import { CiEdit } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 function Meetupitem(props) {
   const history = useNavigate();
@@ -22,11 +23,13 @@ function Meetupitem(props) {
         description: props.description,
         image: props.image,
         address: props.address,
+        date: props.date,
       });
     }
   }
 
   const handleClick = (data) => {
+    console.log("data", data);
     history("/new-meetup", {
       state: {
         data: data,
@@ -34,7 +37,11 @@ function Meetupitem(props) {
       },
     });
   };
-
+  const handledelete = async (data) => {
+    try {
+      // await deleteCard(data.id);
+    } catch (error) {}
+  };
   return (
     <div
       className="card"
@@ -103,57 +110,15 @@ function Meetupitem(props) {
                   style={{ marginLeft: "8", stroke: "none", color: "grey" }}
                 />
               }
+              <RiDeleteBin5Line
+                onClick={() => handledelete(props)}
+                style={{ marginLeft: "8", stroke: "none", color: "grey" }}
+              />
             </button>
           </div>
         </div>
       </div>
     </div>
-    // <div className="card" style={{ padding: 0 }}>
-    //   <img style={{ height: "15rem", width: "100%" }} src={props.image} />
-    //   <h1> {props.title}</h1>
-    // </div>
-    // =============
-    // <div
-    //   style={{ backgroundColor: "black", padding: "10px", borderRadius: "5px" }}
-    //   className="card"
-    // >
-    //   <img src={props.image} alt="Card" className="card-image" />
-    //   <div className="card-content">
-    //     <div
-    //       style={{
-    //         display: "flex",
-    //         alignItems: "center",
-    //         justifyContent: "space-between",
-    //       }}
-    //     >
-    //       <div>
-    //         <h2 className="card-title">{props.title}</h2>
-    //       </div>
-    //       <div>
-    //         <button
-    //           style={{
-    //             backgroundColor: "grey",
-    //             border: "none",
-    //             cursor: "pointer",
-    //           }}
-    //           onClick={toggleStatus}
-    //         >
-    //           {itemISFavourite ? (
-    //             <MdFavorite style={{ stroke: "none", color: "black" }} />
-    //           ) : (
-    //             <MdFavoriteBorder style={{ stroke: "none", color: "black" }} />
-    //           )}
-    //           {
-    //             <CiEdit
-    //               onClick={() => handleClick(props)}
-    //               style={{ marginLeft: "5", stroke: "none", color: "black" }}
-    //             />
-    //           }
-    //         </button>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   );
 }
 

@@ -1,33 +1,46 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import "./Newmeetups.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function Newmeetups(props) {
+  const formRef = useRef();
+  const editValues = props?.details?.data;
+  const isEditMode = props?.edit;
   const initialValues = {
     title: "",
     image: "",
     address: "",
     description: "",
+    date: new Date(),
   };
-  const editValues = props?.details?.data;
-  const isEditMode = props?.edit;
+
   const onSubmit = (values, { resetForm }) => {
     if (isEditMode) {
       props.onUpdateMeetup(values);
     } else {
-      // Handle add logic for add mode
       props.onAddMeetup(values);
     }
+
     resetForm();
   };
+
+  useEffect(() => {
+    if (isEditMode && formRef?.current?.values?.date) {
+      formRef?.current?.setFieldValue("date", new Date(editValues.date)); // Parse the ISO 8601 string into a Date object
+    }
+  }, [isEditMode]);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     image: Yup.string().url("Invalid URL").required("Image URL is required"),
     address: Yup.string().required("Address is required"),
     description: Yup.string().required("Description is required"),
+    date: Yup.string().required("date is required"),
   });
+
   return (
     <div className="form">
       <Formik
@@ -35,8 +48,9 @@ function Newmeetups(props) {
         onSubmit={onSubmit}
         validationSchema={validationSchema}
         enableReinitialize={true}
+        innerRef={formRef}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, values, setFieldValue }) => (
           <Form>
             <div className="control">
               <label htmlFor="title" style={{ color: "grey" }}>
@@ -66,6 +80,25 @@ function Newmeetups(props) {
                 <div className="error-message">{errors.address}</div>
               )}
             </div>
+            {isEditMode && values.date ? (
+              <div className="control">
+                <label htmlFor="date" style={{ color: "grey" }}>
+                  Date
+                </label>
+                <DatePicker
+                  id="date"
+                  selected={isEditMode ? new Date(values.date) : values.date}
+                  onChange={(date) => setFieldValue("date", date)}
+                  // onChange={(date) => console.log("date", date)}
+                  dateFormat="MM/dd/yyyy"
+                  className="custom-datepicker"
+                />
+                {errors.date && touched.date && (
+                  <div className="error-message">{errors.date}</div>
+                )}
+              </div>
+            ) : null}
+
             <div className="control">
               <label htmlFor="description" style={{ color: "grey" }}>
                 Description

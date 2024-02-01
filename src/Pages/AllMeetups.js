@@ -35,15 +35,12 @@ function AllMeetups() {
         setloadedMeetups(Meetups);
       });
   }, []);
-
   return (
     <div>
       {loading ? (
         <Loading />
       ) : (
         <>
-          {/* <p style={{ color: "pink" }}>user Email: {user && user.email}</p>
-          <button onClick={handleLogout}>Logout</button> */}
           <MeetupList meetups={loadedMeetups} />
         </>
       )}

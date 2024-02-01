@@ -14,6 +14,7 @@ function MainNavigation() {
   const [activeLink, setActiveLink] = useState(""); // State variable to track active link
   const [color, setColor] = useState("White");
   const [showModal, setShowModal] = useState(false);
+  const [click, setClick] = useState(false);
 
   useEffect(() => {
     function handleResize() {
@@ -45,6 +46,9 @@ function MainNavigation() {
 
   const handleMouseLeave = () => {
     setColor("White");
+  };
+  const toggleDropdoen = () => {
+    setClick((v) => !v);
   };
   console.log("color", color);
 
@@ -102,42 +106,57 @@ function MainNavigation() {
                 </Link>
               </li>
               <li>
-                <Dropdown toggleModal={toggleModal} />
+                <Link
+                  to="/favourite"
+                  style={{
+                    color: color,
+                  }}
+                  onClick={() => toggleDropdoen()}
+                >
+                  More Info
+                  <IoMdArrowDropdown
+                    onClick={toggleDropdoen}
+                    style={{ stroke: "none", color: "white" }}
+                  />
+                </Link>
+                {click && (
+                  <Dropdown
+                    toggleDropdoen={toggleDropdoen}
+                    toggleModal={toggleModal}
+                  />
+                )}
               </li>
             </ul>
           </nav>
         </header>
       )}
       {/* Modal */}
-      {
-        showModal && (
-          <div className="modal-overlay" onClick={toggleModal}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <span className="close" onClick={toggleModal}>
-                &times;
-              </span>
-              <h1>welcome {user && user.email.split("@")[0]}</h1>
-              <h2>About Us</h2>
-              <p>
-                Welcome to our website! We are passionate travelers who believe
-                in the power of documenting our adventures. Our platform is
-                designed to help you capture and relive your travel memories in
-                a personalized way.
-              </p>
-              <p>
-                At [Website Name], we strive to provide you with the tools and
-                resources to create your own digital diary of travel
-                experiences, connect with fellow travelers, and discover new
-                destinations.
-              </p>
-              <p>
-                Join our community today and start your journey towards
-                unforgettable adventures!
-              </p>
-            </div>
+      {showModal && (
+        <div className="modal-overlay" onClick={toggleModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <span className="close" onClick={toggleModal}>
+              &times;
+            </span>
+            <h1>welcome {user && user.email.split("@")[0]}</h1>
+            <h2>About Us</h2>
+            <p>
+              Welcome to our website! We are passionate travelers who believe in
+              the power of documenting our adventures. Our platform is designed
+              to help you capture and relive your travel memories in a
+              personalized way.
+            </p>
+            <p>
+              At Voyage Vault, we strive to provide you with the tools and
+              resources to create your own digital diary of travel experiences,
+              connect with fellow travelers, and discover new destinations.
+            </p>
+            <p>
+              Join our community today and start your journey towards
+              unforgettable adventures!
+            </p>
           </div>
-        )
-      }
+        </div>
+      )}
     </>
   );
 }
