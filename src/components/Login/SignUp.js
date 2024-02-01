@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import "./Login.css";
@@ -13,7 +14,11 @@ function SignUp() {
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string().required("Password is required"),
   });
+  const [showPassword, setShowPassword] = useState(false);
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const initialValues = {
     email: "",
     password: "",
@@ -25,6 +30,7 @@ function SignUp() {
       history("/all-meetup");
     } catch (error) {
       console.log(error);
+      alert(error);
     }
     //    // method: 2;  createUserWithEmailAndPassword(auth, values.email, values.password)
     //   .then((userCredential) => {
@@ -56,13 +62,22 @@ function SignUp() {
               <div className="error-message">
                 <ErrorMessage name="email" />
               </div>
-              <Field
-                className="login-input"
-                type="password"
-                placeholder="Password"
-                id="password"
-                name="password"
-              />
+              <div className="password-input-container">
+                <Field
+                  className="login-input1"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  id="password"
+                  name="password"
+                />
+                <button
+                  className="toggle-password-button"
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
+                </button>
+              </div>
               <div className="error-message">
                 <ErrorMessage name="password" />
               </div>

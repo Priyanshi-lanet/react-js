@@ -6,21 +6,31 @@ import MainNavigatation from "./components/layout/MainNavigatation";
 import Login from "./components/Login/Login";
 import SIgnUp from "./components/Login/SignUp";
 import "./components/meetups/card.css";
+import { AuthContextProvider } from "./components/context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import ForgotPass from "./components/Login/ForgotPass";
 function App() {
   return (
     <div>
       <BrowserRouter>
-        <header>
-          <div className="logo">Voyage chronicle</div>
-        </header>
-        <MainNavigatation className="navigation" />
-        <Routes>
-          <Route path="/" exact element={<Login />} />
-          <Route path="/all-meetup" element={<AllMeetups />} />
-          <Route path="/new-meetup" element={<NewMeetup />} />
-          <Route path="/sign-up" element={<SIgnUp />} />
-          <Route path="/favourite" element={<Favourites />} />
-        </Routes>
+        <AuthContextProvider>
+          <header>
+            <div className="logo">Voyage Vault</div>
+          </header>
+
+          <MainNavigatation className="navigation" />
+          <Routes>
+            <Route path="/" exact element={<Login />} />
+            <Route
+              path="/all-meetup"
+              element={<ProtectedRoute>{<AllMeetups />}</ProtectedRoute>}
+            />
+            <Route path="/new-meetup" element={<NewMeetup />} />
+            <Route path="/sign-up" element={<SIgnUp />} />
+            <Route path="/favourite" element={<Favourites />} />
+            <Route path="/forgotPassward" element={<ForgotPass />} />
+          </Routes>
+        </AuthContextProvider>
       </BrowserRouter>
     </div>
   );
