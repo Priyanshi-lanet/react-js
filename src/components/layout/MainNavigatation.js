@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./MainNavigator.css";
 import { Link, useLocation } from "react-router-dom";
-import FavouriteContext from "../store/fav-context";
+import FavouriteContext from "../store/actions/fav-context";
 import { UserAuth } from "../context/AuthContext";
 import { IoMdArrowDropdown } from "react-icons/io";
 import Dropdown from "../Dropdown/Dropdown";
-import { IoMdCloseCircle } from "react-icons/io";
 
 function MainNavigation() {
   const { user } = UserAuth();
@@ -105,9 +104,10 @@ function MainNavigation() {
                   <span className="badge">{favCtx.totalFavourite}</span>
                 </Link>
               </li>
+
               <li>
                 <Link
-                  to="/favourite"
+                  to="/all-meetup"
                   style={{
                     color: color,
                   }}
@@ -130,6 +130,7 @@ function MainNavigation() {
           </nav>
         </header>
       )}
+
       {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={toggleModal}>
@@ -137,7 +138,7 @@ function MainNavigation() {
             <span className="close" onClick={toggleModal}>
               &times;
             </span>
-            <h1>welcome {user && user.email.split("@")[0]}</h1>
+            <h1>Welcome {user && user.email.split("@")[0]}</h1>
             <h2>About Us</h2>
             <p>
               Welcome to our website! We are passionate travelers who believe in

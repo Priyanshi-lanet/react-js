@@ -14,6 +14,7 @@ function MeetupList(props) {
           address={mup.address}
           description={mup.description}
           date={mup.date}
+          onDeleteMeetup={props.onDeleteMeetup}
         />
       ))}
     </ul>

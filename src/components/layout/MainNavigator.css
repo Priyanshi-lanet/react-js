@@ -70,13 +70,25 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 999; /* Ensure modal is on top of other content */
 }
 
 .modal-content {
-  background-color: grey;
+  background-color: white;
   padding: 20px;
   border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Box shadow effect */
+  animation: zoomIn 0.3s forwards; /* Zoom-in animation */
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .close {
@@ -85,5 +97,36 @@ a {
   right: 10px;
   cursor: pointer;
   font-size: 20px;
-  color: #555;
+  color: #333;
+}
+.reset-input {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+input {
+  padding-left: 30px; /* Adjust as needed */
+  padding-right: 30px; /* Adjust as needed */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.search-icon,
+.close-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.search-icon {
+  left: 10px; /* Adjust as needed */
+}
+
+.close-icon {
+  right: 10px; /* Adjust as needed */
+  cursor: pointer;
 }

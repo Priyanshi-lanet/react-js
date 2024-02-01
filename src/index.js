@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import { FavContextProvider } from "./components/store/fav-context";
+import { FavContextProvider } from "./components/store/actions/fav-context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

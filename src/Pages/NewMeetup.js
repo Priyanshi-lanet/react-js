@@ -39,6 +39,7 @@ function NewMeetup(props) {
       history("/all-meetup");
     });
   }
+
   return (
     <section>
       <h1> ADD NEW MEETS</h1>

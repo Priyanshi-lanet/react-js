@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./Meetupitem.css";
 // import "./card.css";
-import FavouriteContext from "../store/fav-context";
+import FavouriteContext from "../store/actions/fav-context";
 import { CiEdit } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
@@ -39,6 +39,7 @@ function Meetupitem(props) {
   };
   const handledelete = async (data) => {
     try {
+      props.onDeleteMeetup(data.id);
       // await deleteCard(data.id);
     } catch (error) {}
   };

@@ -3,8 +3,13 @@ import MeetupList from "../components/meetups/MeetupList";
 import Loading from "../components/Loader/Loading";
 import { UserAuth } from "../components/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { database } from "../firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { set, ref, remove } from "firebase/database";
+import { getCardList } from "../components/store/actions/card";
 function AllMeetups() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user, logout } = UserAuth();
   const handleLogout = async () => {
     try {
@@ -14,34 +19,32 @@ function AllMeetups() {
       console.log(error);
     }
   };
+  const cardDetails = useSelector((state) => state.card.cardList);
   const [loading, setLoading] = useState(false);
-  const [loadedMeetups, setloadedMeetups] = useState([]);
   useEffect(() => {
-    setLoading(true);
-    fetch("https://fir-project-f7ce8-default-rtdb.firebaseio.com/meetups.json")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        const Meetups = [];
-        for (const key in data) {
-          const meetup = {
-            id: key,
-            ...data[key],
-          };
-          Meetups.push(meetup);
-        }
-        setLoading(false);
-        setloadedMeetups(Meetups);
-      });
+    const fetchData = async () => {
+      setLoading(true);
+      await dispatch(getCardList());
+      setLoading(false);
+    };
+
+    fetchData();
   }, []);
+
+  function onDeleteMeetup(id) {
+    const dataRef = database.ref(
+      `https://fir-project-f7ce8-default-rtdb.firebaseio.com/meetups/${id}.json`
+    );
+    remove(ref(database, "/${id}"), {});
+    console.log("dataRef", dataRef.toString());
+  }
   return (
     <div>
       {loading ? (
         <Loading />
       ) : (
         <>
-          <MeetupList meetups={loadedMeetups} />
+          <MeetupList meetups={cardDetails} onDeleteMeetup={onDeleteMeetup} />
         </>
       )}
     </div>

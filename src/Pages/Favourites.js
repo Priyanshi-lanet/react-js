@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import FavouriteContext from "../components/store/fav-context";
+import FavouriteContext from "../components/store/actions/fav-context";
 import MeetupList from "../components/meetups/MeetupList";
 function Favourites() {
   const favCtx = useContext(FavouriteContext);
