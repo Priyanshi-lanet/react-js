@@ -1,3 +1,5 @@
+import { get, ref } from "firebase/database";
+import { database } from "../../../../firebase";
 import UniversalToast from "../../../UniversalToast";
 import React from "react";
 
@@ -29,25 +31,33 @@ export function showMessage(options) {
     });
   };
 }
-
-export function getCardList() {
+export function getCardList(searchTerm = "", userId) {
+  const userRef = ref(database, `users/${userId}`);
   return (dispatch) => {
-    fetch("https://fir-project-f7ce8-default-rtdb.firebaseio.com/meetups.json")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
+    get(userRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          // Convert snapshot data to an array of meetups
+          const meetups = Object.keys(snapshot.val()).map((key) => ({
+            id: key,
+            ...snapshot.val()[key],
+          }));
+
+          // Filter data based on search term
+          let filteredMeetups = meetups;
+          if (searchTerm) {
+            filteredMeetups = meetups.filter((meetup) =>
+              meetup.title.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+          }
+
+          dispatch({
+            type: GET_CARD_LIST,
+            payload: filteredMeetups,
+          });
+        } else {
+          console.log("No data available for the specified user");
         }
-        return response.json();
-      })
-      .then((data) => {
-        const meetups = Object.keys(data).map((key) => ({
-          id: key,
-          ...data[key],
-        }));
-        dispatch({
-          type: GET_CARD_LIST,
-          payload: meetups,
-        });
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

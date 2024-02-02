@@ -39,7 +39,7 @@ function Meetupitem(props) {
   };
   const handledelete = async (data) => {
     try {
-      props.onDeleteMeetup(data.id);
+      // props.onDeleteMeetup(data.id);
       // await deleteCard(data.id);
     } catch (error) {}
   };

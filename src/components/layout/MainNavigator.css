@@ -7,6 +7,15 @@
   background-color: #000;
   padding: 0 3%;
 }
+.searchin {
+  width: 100%;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: black;
+  padding-bottom: 1rem;
+}
 
 .logo {
   font-size: 3rem;
@@ -103,6 +112,8 @@ a {
   display: flex;
   align-items: center;
   position: relative;
+  width: 100%;
+  height: 200%;
 }
 
 input {
@@ -112,21 +123,29 @@ input {
   border-radius: 5px;
   outline: none;
   width: 100%;
+  height: 200%;
   box-sizing: border-box;
-}
-
-.search-icon,
-.close-icon {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .search-icon {
   left: 10px; /* Adjust as needed */
+  color: black;
 }
 
 .close-icon {
   right: 10px; /* Adjust as needed */
   cursor: pointer;
+  color: black;
+}
+.search-icon,
+.close-icon {
+  position: absolute;
+  top: 50%;
+  /* transform: translateY(-50%); */
+}
+
+.search-input {
+  padding-left: 30px; /* Adjust according to icon size */
+  padding-right: 30px;
+  padding-bottom: 30px; /* Adjust according to icon size */
 }
