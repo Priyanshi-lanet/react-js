@@ -37,17 +37,8 @@ function AllMeetups() {
     });
     setLoading(false);
     return () => unsubscribe();
-  }, []);
-
-  const updatedCardDetails = cardDetails.map((item) => {
-    const updatedItem = { ...item };
-    Object.keys(item).forEach((key) => {
-      if (typeof item[key] === "object" && key !== "id") {
-        updatedItem[key].id = key;
-      }
-    });
-    return updatedItem;
-  });
+  }, [searchTerm, dispatch]);
+  console.log(JSON.stringify(cardDetails, null, 2));
 
   function onDeleteMeetup(id) {}
 
@@ -87,13 +78,10 @@ function AllMeetups() {
               <IoMdClose className="close-icon" onClick={handleClose} />
             </div>
           </div>
-          {updatedCardDetails.map((item) => {
-            return Object.values(item).map((obj) => {
-              console.log("obj", obj);
-              if (typeof obj === "object" && obj.hasOwnProperty("title")) {
-                return <Meetupitem data={obj} />;
-              }
-              return null;
+
+          {cardDetails.map((item, index) => {
+            return item[Object.keys(item)[0]].cards.map((card) => {
+              return <Meetupitem data={card} />;
             });
           })}
         </>

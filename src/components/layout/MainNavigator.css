@@ -133,7 +133,7 @@ input {
 }
 
 .close-icon {
-  right: 10px; /* Adjust as needed */
+  right: 8px; /* Adjust as needed */
   cursor: pointer;
   color: black;
 }

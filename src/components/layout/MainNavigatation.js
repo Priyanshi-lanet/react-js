@@ -65,8 +65,6 @@ function MainNavigation() {
                   color: color,
                   height: "50px",
                 }}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
               >
                 <Link
                   to="/all-meetup"
@@ -82,8 +80,6 @@ function MainNavigation() {
                   style={{
                     color: color,
                   }}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
                   onClick={() => setActiveLink("new-meetup")}
                 >
                   New Meetup
@@ -95,8 +91,6 @@ function MainNavigation() {
                   style={{
                     color: color,
                   }}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
                   onClick={() => setActiveLink("favourite")}
                 >
                   Favourite
