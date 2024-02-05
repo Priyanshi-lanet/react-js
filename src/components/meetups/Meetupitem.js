@@ -85,7 +85,12 @@ function Meetupitem(props) {
           <div>
             <h2
               className="card-title"
-              style={{ marginLeft: "5px", fontSize: "1.2rem", color: "white" }}
+              style={{
+                marginLeft: "5px",
+                fontSize: "0.72rem",
+                color: "white",
+                fontFamily: "Roboto",
+              }}
             >
               {props.data.title}
             </h2>
