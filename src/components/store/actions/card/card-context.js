@@ -57,29 +57,33 @@ export function getCardList(searchTerm = "", userId) {
           return newObj;
         });
 
-        // Copy code
-        // function searchCards(transformedCardDetails, searchTerm) {
-        //   return transformedCardDetails.map(item => {
-        //     const newObj = {};
-        //     newObj[Object.keys(item)[0]] = {
-        //       cards: item[Object.keys(item)[0]].cards.filter(card =>
-        //         Object.values(card).some(value =>
-        //           typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase())
-        //         )
-        //       ),
-        //       email: item[Object.keys(item)[0]].email
-        //     };
-        //     return newObj;
-        //   });
-        // }
-
-        // const searchTerm = "Desert";
-        // const filteredTransformedCardDetails = searchCards(transformedCardDetails, searchTerm);
-        // console.log(filteredTransformedCardDetails);
+        function searchCards(transformedCardDetails, searchTerm) {
+          return transformedCardDetails.map((item) => {
+            const newObj = {};
+            newObj[Object.keys(item)[0]] = {
+              cards: item[Object.keys(item)[0]].cards.filter((card) =>
+                Object.values(card).some(
+                  (value) =>
+                    typeof value === "string" &&
+                    value.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+              ),
+              email: item[Object.keys(item)[0]].email,
+            };
+            return newObj;
+          });
+        }
+        const filteredTransformedCardDetails = searchCards(
+          transformedCardDetails,
+          searchTerm
+        );
+        console.log(filteredTransformedCardDetails);
 
         dispatch({
           type: GET_CARD_LIST,
-          payload: transformedCardDetails,
+          payload: searchTerm?.length
+            ? filteredTransformedCardDetails
+            : transformedCardDetails,
         });
       })
       .catch((error) => {
