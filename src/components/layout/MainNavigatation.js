@@ -49,7 +49,6 @@ function MainNavigation() {
   const toggleDropdoen = () => {
     setClick((v) => !v);
   };
-  console.log("color", color);
 
   const toggleModal = () => {
     setShowModal((v) => !v);

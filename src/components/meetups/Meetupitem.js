@@ -8,6 +8,7 @@ import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
 function Meetupitem(props) {
+  console.log("kkk", JSON.stringify(props.data, null, 2));
   const history = useNavigate();
 
   const favCtx = useContext(FavouriteContext);
@@ -15,21 +16,19 @@ function Meetupitem(props) {
 
   function toggleStatus() {
     if (itemISFavourite) {
-      favCtx.removeFavourite(props.id);
+      favCtx.removeFavourite(props.data.id);
     } else {
       favCtx.addFavourite({
-        id: props.id,
-        title: props.title,
-        description: props.description,
-        image: props.image,
-        address: props.address,
-        date: props.date,
+        id: props.data.id,
+        title: props.data.title,
+        description: props.data.description,
+        image: props.data.image,
+        address: props.data.address,
       });
     }
   }
 
   const handleClick = (data) => {
-    console.log("data", data);
     history("/new-meetup", {
       state: {
         data: data,
@@ -55,7 +54,7 @@ function Meetupitem(props) {
       }}
     >
       <img
-        src={props.image}
+        src={props.data.image}
         style={{ height: "14rem", width: "100%", objectFit: "cover" }}
       />
       <div
@@ -86,9 +85,9 @@ function Meetupitem(props) {
           <div>
             <h2
               className="card-title"
-              style={{ marginLeft: "5px", fontSize: "1.2rem" }}
+              style={{ marginLeft: "5px", fontSize: "1.2rem", color: "white" }}
             >
-              {props.title}
+              {props.data.title}
             </h2>
           </div>
           <div>
@@ -101,13 +100,13 @@ function Meetupitem(props) {
               onClick={toggleStatus}
             >
               {itemISFavourite ? (
-                <MdFavorite style={{ stroke: "none", color: "grey" }} />
+                <MdFavorite style={{ stroke: "none" }} />
               ) : (
                 <MdFavoriteBorder style={{ stroke: "none", color: "grey" }} />
               )}
               {
                 <CiEdit
-                  onClick={() => handleClick(props)}
+                  onClick={() => handleClick(props.data)}
                   style={{ marginLeft: "8", stroke: "none", color: "grey" }}
                 />
               }

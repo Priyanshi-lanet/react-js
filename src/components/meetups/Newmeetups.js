@@ -14,10 +14,11 @@ function Newmeetups(props) {
     image: "",
     address: "",
     description: "",
-    date: new Date(),
+    // date: new Date(),
   };
 
   const onSubmit = (values, { resetForm }) => {
+    console.log(values);
     if (isEditMode) {
       props.onUpdateMeetup(values);
     } else {
@@ -27,18 +28,18 @@ function Newmeetups(props) {
     resetForm();
   };
 
-  useEffect(() => {
-    if (isEditMode && formRef?.current?.values?.date) {
-      formRef?.current?.setFieldValue("date", new Date(editValues.date)); // Parse the ISO 8601 string into a Date object
-    }
-  }, [isEditMode]);
+  // useEffect(() => {
+  //   if (isEditMode && formRef?.current?.values?.date) {
+  //     formRef?.current?.setFieldValue("date", new Date(editValues.date)); // Parse the ISO 8601 string into a Date object
+  //   }
+  // }, [isEditMode]);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     image: Yup.string().url("Invalid URL").required("Image URL is required"),
     address: Yup.string().required("Address is required"),
     description: Yup.string().required("Description is required"),
-    date: Yup.string().required("date is required"),
+    // date: Yup.string().required("date is required"),
   });
 
   return (
@@ -51,75 +52,78 @@ function Newmeetups(props) {
         innerRef={formRef}
       >
         {({ errors, touched, values, setFieldValue }) => (
-          <Form>
-            <div className="control">
-              <label htmlFor="title" style={{ color: "grey" }}>
-                Meetup Title
-              </label>
-              <Field type="text" id="title" name="title" />
-
-              {errors.title && touched.title && (
-                <div className="error-message">{errors.title}</div>
-              )}
-            </div>
-            <div className="control">
-              <label htmlFor="image" style={{ color: "grey" }}>
-                Meetup Image
-              </label>
-              <Field type="url" id="image" name="image" />
-              {errors.image && touched.image && (
-                <div className="error-message">{errors.image}</div>
-              )}
-            </div>
-            <div className="control">
-              <label htmlFor="address" style={{ color: "grey" }}>
-                Address
-              </label>
-              <Field type="text" id="address" name="address" />
-              {errors.address && touched.address && (
-                <div className="error-message">{errors.address}</div>
-              )}
-            </div>
-            {isEditMode && values.date ? (
+          console.log("values.date", values.date),
+          (
+            <Form>
               <div className="control">
-                <label htmlFor="date" style={{ color: "grey" }}>
-                  Date
+                <label htmlFor="title" style={{ color: "grey" }}>
+                  Meetup Title
                 </label>
-                <DatePicker
-                  id="date"
-                  selected={isEditMode ? new Date(values.date) : values.date}
-                  onChange={(date) => setFieldValue("date", date)}
-                  // onChange={(date) => console.log("date", date)}
-                  dateFormat="MM/dd/yyyy"
-                  className="custom-datepicker"
-                />
-                {errors.date && touched.date && (
-                  <div className="error-message">{errors.date}</div>
+                <Field type="text" id="title" name="title" />
+
+                {errors.title && touched.title && (
+                  <div className="error-message">{errors.title}</div>
                 )}
               </div>
-            ) : null}
+              <div className="control">
+                <label htmlFor="image" style={{ color: "grey" }}>
+                  Meetup Image
+                </label>
+                <Field type="url" id="image" name="image" />
+                {errors.image && touched.image && (
+                  <div className="error-message">{errors.image}</div>
+                )}
+              </div>
+              <div className="control">
+                <label htmlFor="address" style={{ color: "grey" }}>
+                  Address
+                </label>
+                <Field type="text" id="address" name="address" />
+                {errors.address && touched.address && (
+                  <div className="error-message">{errors.address}</div>
+                )}
+              </div>
+              {/* {(isEditMode && values.date) || !isEditMode ? (
+                <div className="control">
+                  <label htmlFor="date" style={{ color: "grey" }}>
+                    Date
+                  </label>
+                  <DatePicker
+                    id="date"
+                    selected={isEditMode ? new Date(values.date) : values.date}
+                    onChange={(date) => setFieldValue("date", date)}
+                    // onChange={(date) => console.log("date", date)}
+                    dateFormat="MM/dd/yyyy"
+                    className="custom-datepicker"
+                  />
+                  {errors.date && touched.date && (
+                    <div className="error-message">{errors.date}</div>
+                  )}
+                </div>
+              ) : null} */}
 
-            <div className="control">
-              <label htmlFor="description" style={{ color: "grey" }}>
-                Description
-              </label>
-              <Field
-                component="textarea"
-                id="description"
-                name="description"
-                rows="5"
-              />
-              {errors.description && touched.description && (
-                <div className="error-message">{errors.description}</div>
-              )}
-            </div>
+              <div className="control">
+                <label htmlFor="description" style={{ color: "grey" }}>
+                  Description
+                </label>
+                <Field
+                  component="textarea"
+                  id="description"
+                  name="description"
+                  rows="5"
+                />
+                {errors.description && touched.description && (
+                  <div className="error-message">{errors.description}</div>
+                )}
+              </div>
 
-            <div className="actions">
-              <button type="submit">
-                {isEditMode ? "Update Meetup" : "Add Meetup"}
-              </button>
-            </div>
-          </Form>
+              <div className="actions">
+                <button type="submit">
+                  {isEditMode ? "Update Meetup" : "Add Meetup"}
+                </button>
+              </div>
+            </Form>
+          )
         )}
       </Formik>
     </div>

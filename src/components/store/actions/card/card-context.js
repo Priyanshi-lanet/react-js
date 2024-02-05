@@ -32,32 +32,25 @@ export function showMessage(options) {
   };
 }
 export function getCardList(searchTerm = "", userId) {
-  const userRef = ref(database, `users/${userId}`);
   return (dispatch) => {
-    get(userRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          // Convert snapshot data to an array of meetups
-          const meetups = Object.keys(snapshot.val()).map((key) => ({
-            id: key,
-            ...snapshot.val()[key],
-          }));
-
-          // Filter data based on search term
-          let filteredMeetups = meetups;
-          if (searchTerm) {
-            filteredMeetups = meetups.filter((meetup) =>
-              meetup.title.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-          }
-
-          dispatch({
-            type: GET_CARD_LIST,
-            payload: filteredMeetups,
-          });
-        } else {
-          console.log("No data available for the specified user");
+    fetch("https://fir-project-f7ce8-default-rtdb.firebaseio.com/users.json")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
         }
+        return response.json();
+      })
+      .then((data) => {
+        const meetups = Object.keys(data).map((key) => ({
+          id: key,
+          ...data[key],
+        }));
+        const filtered = meetups.filter((item) => item.id === userId);
+
+        dispatch({
+          type: GET_CARD_LIST,
+          payload: filtered,
+        });
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

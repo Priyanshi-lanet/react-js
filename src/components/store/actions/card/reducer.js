@@ -7,7 +7,6 @@ const initialState = {
 const cardReducer = (state = initialState, action) => {
   switch (action.type) {
     case Actions.GET_CARD_LIST: {
-      console.log("action.payload", action.payload);
       return {
         ...state,
         cardList: action.payload,
