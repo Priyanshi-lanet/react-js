@@ -18,12 +18,12 @@ function NewMeetup(props) {
         setUserId(null);
       }
     });
-
     return () => unsubscribe();
   }, []);
 
   const addMeetupHandler = async (meetupData) => {
     try {
+      setloader(true);
       if (!userId) {
         console.error("User is not signed in");
         return;
@@ -31,24 +31,25 @@ function NewMeetup(props) {
       await push(ref(database, `users/${userId}`), meetupData);
       console.log("Data added successfully");
       history("/all-meetup");
+      setloader(false);
     } catch (error) {
+      setloader(false);
       console.error("Error adding data:", error.message);
     }
   };
 
   const updateMeetupHandler = async (updatedMeetupData) => {
     const dataRef = ref(database, `users/${userId}/${updatedMeetupData.id}`);
+
     try {
-      console.log("dataRef", dataRef);
-      try {
-        await update(dataRef, updatedMeetupData);
-        console.log("Data updated successfully");
-        history("/all-meetup");
-      } catch (error) {
-        console.error("Error updating data:", error.message);
-      }
+      setloader(true);
+      await update(dataRef, updatedMeetupData);
+      console.log("Data updated successfully");
+      history("/all-meetup");
+      setloader(false);
     } catch (error) {
-      console.log("error", error);
+      setloader(false);
+      console.error("Error updating data:", error.message);
     }
   };
 

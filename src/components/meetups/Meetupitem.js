@@ -12,7 +12,7 @@ function Meetupitem(props) {
   const history = useNavigate();
 
   const favCtx = useContext(FavouriteContext);
-  const itemISFavourite = favCtx.itemIsFavourite(props.id);
+  const itemISFavourite = favCtx.itemIsFavourite(props.data.id);
 
   function toggleStatus() {
     if (itemISFavourite) {
@@ -100,20 +100,21 @@ function Meetupitem(props) {
               onClick={toggleStatus}
             >
               {itemISFavourite ? (
-                <MdFavorite style={{ stroke: "none" }} />
+                <MdFavorite style={{ stroke: "none", color: "grey" }} />
               ) : (
                 <MdFavoriteBorder style={{ stroke: "none", color: "grey" }} />
               )}
               {
                 <CiEdit
                   onClick={() => handleClick(props.data)}
-                  style={{ marginLeft: "8", stroke: "none", color: "grey" }}
+                  style={{ marginLeft: "15", stroke: "none", color: "grey" }}
                 />
               }
-              <RiDeleteBin5Line
+              {/* <RiDeleteBin5Line
                 onClick={() => handledelete(props)}
                 style={{ marginLeft: "8", stroke: "none", color: "grey" }}
-              />
+              // /> */}
+              {/* //Edited for Delete Functionlity */}
             </button>
           </div>
         </div>

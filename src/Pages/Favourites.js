@@ -7,10 +7,6 @@ function Favourites() {
   if (favCtx.totalFavourite === 0) {
     context = <p>you got no favourites yet.Start adding some?</p>;
   } else {
-    console.log(
-      "favCtx.favoutite",
-      favCtx.favoutite.map((i) => i)
-    );
     context = favCtx.favoutite.map((item) => (
       <Meetupitem key={item.id} data={item} />
     ));
