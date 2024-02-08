@@ -11,6 +11,7 @@ import { AuthContextProvider } from "./components/context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPass from "./components/Login/ForgotPass";
 import store from "./components/store/createStore";
+import ChatScreen from "./Pages/ChatScreen";
 function App() {
   return (
     <div>
@@ -32,6 +33,7 @@ function App() {
               <Route path="/sign-up" element={<SIgnUp />} />
               <Route path="/favourite" element={<Favourites />} />
               <Route path="/forgotPassward" element={<ForgotPass />} />
+              <Route path="/chatScreen" element={<ChatScreen />} />
             </Routes>
           </StoreProvider>
         </AuthContextProvider>

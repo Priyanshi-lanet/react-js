@@ -97,6 +97,17 @@ function MainNavigation() {
                   <span className="badge">{favCtx.totalFavourite}</span>
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/chatScreen"
+                  style={{
+                    color: color,
+                  }}
+                  onClick={() => setActiveLink("favourite")}
+                >
+                  ChatScreen
+                </Link>
+              </li>
 
               <li>
                 <Link
