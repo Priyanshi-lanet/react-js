@@ -45,16 +45,29 @@ export function getCardList(searchTerm = "", userId) {
           id: key,
           ...data[key],
         }));
+
+        console.log(JSON.stringify(meetups, null, 2));
         const filtered = meetups.filter((item) => item.id === userId);
-        const transformedCardDetails = filtered.map((item) => {
-          const newObj = {};
-          newObj[item.id] = {
-            cards: Object.entries(item)
-              .filter(([key]) => key !== "id" && key !== "email")
-              .map(([key, value]) => ({ id: key, ...value })),
-            email: item.email,
+        console.log("filtered", filtered);
+        // const transformedCardDetails = filtered.map((item) => {
+        //   const newObj = {};
+        //   newObj[item.id] = {
+        //     cards: Object.entries(item)
+        //       .filter(([key]) => key !== "id" && key !== "email")
+        //       .map(([key, value]) => ({ id: key, ...value })),
+        //     email: item.email,
+        //   };
+        //   return newObj;
+        // });
+        const convertedData = filtered.map((item) => {
+          const { id, email, name, profile, ...rest } = item;
+          return {
+            id,
+            email,
+            name,
+            profile,
+            ...rest,
           };
-          return newObj;
         });
 
         function searchCards(transformedCardDetails, searchTerm) {
@@ -74,16 +87,17 @@ export function getCardList(searchTerm = "", userId) {
           });
         }
         const filteredTransformedCardDetails = searchCards(
-          transformedCardDetails,
+          convertedData,
           searchTerm
         );
-        console.log(filteredTransformedCardDetails);
+        console.log("convertedData", convertedData);
 
         dispatch({
           type: GET_CARD_LIST,
           payload: searchTerm?.length
             ? filteredTransformedCardDetails
-            : transformedCardDetails,
+            : convertedData,
+          // : transformedCardDetails,
         });
       })
       .catch((error) => {

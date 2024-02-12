@@ -24,7 +24,7 @@ function AllMeetups() {
     }
   };
   const cardDetails = useSelector((state) => state.card.cardList);
-
+  console.log("cardDetails", cardDetails);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -79,11 +79,12 @@ function AllMeetups() {
             </div>
           </div>
 
-          {cardDetails.map((item, index) => {
-            return item[Object.keys(item)[0]].cards.map((card) => {
-              return <Meetupitem data={card} />;
-            });
-          })}
+          {cardDetails &&
+            cardDetails.map((item, index) => {
+              return item[Object.keys(item)[0]].cards.map((card) => {
+                return <Meetupitem data={card} />;
+              });
+            })}
         </>
       )}
     </div>

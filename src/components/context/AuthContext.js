@@ -7,14 +7,19 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth, database } from "../../firebase";
-import { ref, set } from "firebase/database";
+import { set, ref } from "firebase/database";
 
 const UserContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
+  function generateRandom5DigitNumber() {
+    // Generate a random number between 10000 and 99999
+    const randomNumber = Math.floor(Math.random() * 90000) + 10000;
+    return randomNumber;
+  }
 
-  const createUser = async (email, password) => {
+  const createUser = async (email, password, name, image) => {
     try {
       // Create the user with email and password
       const userCredential = await createUserWithEmailAndPassword(
@@ -23,16 +28,23 @@ export const AuthContextProvider = ({ children }) => {
         password
       );
 
+      console.log("imageUrl", image);
       // Get the user token
       const user = userCredential.user;
       const token = await user.getIdToken();
       const userId = user.uid;
+
       const userData = {
         email: user.email,
-        // Add additional fields as needed
+        name: name,
+        id: userId,
+        profile: image,
       };
+      const random5DigitNumber = generateRandom5DigitNumber();
       await set(ref(database, `users/${userId}`), userData);
-      console.log("token", token);
+      await set(ref(database, `userChats/${userId}`), {
+        id: random5DigitNumber,
+      });
       localStorage.setItem("userToken", token);
       localStorage.setItem("userId", userId);
       return token;
@@ -55,7 +67,8 @@ export const AuthContextProvider = ({ children }) => {
   };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log(currentUser);
+      console.log("currentUSer", currentUser);
+      // console.log(currentUser);
       setUser(currentUser);
     });
     return () => {

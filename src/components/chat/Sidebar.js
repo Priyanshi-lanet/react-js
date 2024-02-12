@@ -7,7 +7,6 @@ const Sidebar = () => {
     <div className="sidebar">
       <NavScreen />
       <Searchbar />
-      <p style={{ color: "white" }}>sidebattttt</p>
     </div>
   );
 };

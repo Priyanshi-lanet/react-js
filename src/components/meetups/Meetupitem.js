@@ -9,7 +9,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import FavouriteContext from "../store/actions/fav-context";
 
 function Meetupitem(props) {
-  console.log("kkk", JSON.stringify(props.data, null, 2));
+  // console.log("kkk", JSON.stringify(props.data, null, 2));
   const history = useNavigate();
 
   const favCtx = useContext(FavouriteContext);

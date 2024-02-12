@@ -4,41 +4,65 @@ import * as Yup from "yup";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../firebase";
+
+import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
+import { auth, storage } from "../../firebase";
 import "./Login.css";
 import { UserAuth } from "../context/AuthContext";
+
 function SignUp() {
   const { createUser } = UserAuth();
   const history = useNavigate();
+  const [imageUpload, setimageUpload] = useState(null);
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string().required("Password is required"),
+    name: Yup.string().required("Name is required"),
+    // image: Yup.mixed().required("Image is required"),
   });
+
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
   const initialValues = {
     email: "",
     password: "",
+    name: "",
+    image: null,
+  };
+
+  const getUrlFromFirebase = async (image) => {
+    console.log("getUrlFromFirebase", imageUpload);
+    if (imageUpload == null) return;
+    const storageRef = ref(storage, `Img/${uuidv4()}`);
+    try {
+      const snapshot = await uploadBytes(storageRef, image);
+      const url = await getDownloadURL(snapshot.ref);
+      return url;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      throw error;
+    }
   };
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      await createUser(values.email, values.password);
-      history("/all-meetup");
+      await getUrlFromFirebase(imageUpload).then((imageUrl) => {
+        createUser(values.email, values.password, values.name, imageUrl);
+        history("/all-meetup");
+      });
+      console.log("values.image)", imageUpload);
+
+      // Handle form submission
     } catch (error) {
       console.log(error);
       alert(error);
     }
-    //    // method: 2;  createUserWithEmailAndPassword(auth, values.email, values.password)
-    //   .then((userCredential) => {
-    //     history("/");
-    //   })
-    //   .catch((error) => {
-    //     console.error("error", error);
-    //   });
   };
 
   return (
@@ -50,8 +74,30 @@ function SignUp() {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, setFieldValue }) => (
             <Form className="w-full max-w-sm">
+              <Field
+                className="login-input"
+                type="name"
+                id="name"
+                name="name"
+                placeholder="Name"
+              />
+              <div className="error-message">
+                <ErrorMessage name="name" />
+              </div>
+
+              <Field
+                type="file"
+                name="image"
+                onChange={(event) => {
+                  setimageUpload(event.currentTarget.files[0]);
+                }}
+              />
+              <div className="error-message">
+                <ErrorMessage name="image" />
+              </div>
+
               <Field
                 className="login-input"
                 type="email"
@@ -62,6 +108,7 @@ function SignUp() {
               <div className="error-message">
                 <ErrorMessage name="email" />
               </div>
+
               <div className="password-input-container">
                 <Field
                   className="login-input1"
@@ -81,6 +128,7 @@ function SignUp() {
               <div className="error-message">
                 <ErrorMessage name="password" />
               </div>
+
               <button
                 type="submit"
                 className="login-button"
