@@ -9,6 +9,7 @@ import {
 import { auth, database } from "../../firebase";
 import { set, ref } from "firebase/database";
 
+// import { doc, setDoc } from "firebase/firestore";
 const UserContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
@@ -39,6 +40,16 @@ export const AuthContextProvider = ({ children }) => {
         profile: image,
       };
       const random5DigitNumber = generateRandom5DigitNumber();
+      // await setDoc(doc(firStore, "users", user.uid), {
+      //   email: user.email,
+      //   name: name,
+      //   id: userId,
+      //   profile: image,
+      // });
+
+      // //create empty user chats on firestore
+      // await setDoc(doc(firStore, "userChats", user.uid), {});
+      // navigate("/");
       await set(ref(database, `users/${userId}`), userData);
       await set(ref(database, `userChats/${userId}`), {
         id: random5DigitNumber,

@@ -6,9 +6,9 @@ import { onValue, ref } from "firebase/database";
 const Chats = () => {
   const [user, setuser] = useState([]);
   useEffect(() => {
-    const usersRef = ref(database, "usersChats");
+    const usersRef = ref(database, "userChats");
     onValue(usersRef, (snapshot) => {
-      console.log("snapShots", snapshot);
+      console.log("snapShots", usersRef);
       let records = [];
       snapshot.forEach((element) => {
         let data = element.val();

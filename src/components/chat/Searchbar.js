@@ -12,6 +12,7 @@ const Searchbar = () => {
   const [username, setUsername] = useState("");
   const [userer, setUser] = useState(null);
   const [err, setErr] = useState(false);
+
   useEffect(() => {
     const usersRef = ref(database, "users");
     onValue(usersRef, (snapshot) => {
@@ -20,6 +21,7 @@ const Searchbar = () => {
         let data = element.val();
         records.push({ data: data });
       });
+      console.log("inside Search", records);
       const filterRecordsByName = (records, name) => {
         return records.filter((record) => {
           return record.data.name.toLowerCase() === name.toLowerCase();
