@@ -46,9 +46,8 @@ export function getCardList(searchTerm = "", userId) {
           ...data[key],
         }));
 
-        console.log(JSON.stringify(meetups, null, 2));
         const filtered = meetups.filter((item) => item.id === userId);
-        console.log("filtered", filtered);
+
         const transformedCardDetails = filtered.map((item) => {
           const newObj = {};
           newObj[item.id] = {

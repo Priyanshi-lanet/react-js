@@ -27,8 +27,6 @@ export const AuthContextProvider = ({ children }) => {
         email,
         password
       );
-
-      console.log("imageUrl", image);
       // Get the user token
       const user = userCredential.user;
       const token = await user.getIdToken();
@@ -67,7 +65,6 @@ export const AuthContextProvider = ({ children }) => {
   };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("currentUSer", currentUser);
       // console.log(currentUser);
       setUser(currentUser);
     });

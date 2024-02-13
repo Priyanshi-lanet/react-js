@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./ChatScreen.css";
+import { database } from "../../firebase";
+import { onValue, ref } from "firebase/database";
 
 const Chats = () => {
+  const [user, setuser] = useState([]);
+  useEffect(() => {
+    const usersRef = ref(database, "usersChats");
+    onValue(usersRef, (snapshot) => {
+      console.log("snapShots", snapshot);
+      let records = [];
+      snapshot.forEach((element) => {
+        let data = element.val();
+        records.push({ data: data });
+      });
+      // const filterRecordsByName = (records, name) => {
+      //   return records.filter((record) => {
+      //     return record.data.name.toLowerCase() === name.toLowerCase();
+      //   });
+      // };
+      // const filteredRecords = filterRecordsByName(records, username);
+      setuser(records);
+    });
+  }, [database]);
   return (
     <>
       <div className="userChat">

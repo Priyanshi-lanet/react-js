@@ -24,7 +24,7 @@ function AllMeetups() {
     }
   };
   const cardDetails = useSelector((state) => state.card.cardList);
-  console.log("cardDetails", JSON.stringify(cardDetails, null, 2));
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -38,7 +38,6 @@ function AllMeetups() {
     setLoading(false);
     return () => unsubscribe();
   }, [searchTerm, dispatch]);
-  console.log(JSON.stringify(cardDetails, null, 2));
 
   function onDeleteMeetup(id) {}
 

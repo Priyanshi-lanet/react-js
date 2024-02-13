@@ -18,7 +18,6 @@ function Newmeetups(props) {
   };
 
   const onSubmit = (values, { resetForm }) => {
-    console.log(values);
     if (isEditMode) {
       props.onUpdateMeetup(values);
     } else {
@@ -52,38 +51,36 @@ function Newmeetups(props) {
         innerRef={formRef}
       >
         {({ errors, touched, values, setFieldValue }) => (
-          console.log("values.date", values.date),
-          (
-            <Form>
-              <div className="control">
-                <label htmlFor="title" style={{ color: "grey" }}>
-                  Meetup Title
-                </label>
-                <Field type="text" id="title" name="title" />
+          <Form>
+            <div className="control">
+              <label htmlFor="title" style={{ color: "grey" }}>
+                Meetup Title
+              </label>
+              <Field type="text" id="title" name="title" />
 
-                {errors.title && touched.title && (
-                  <div className="error-message">{errors.title}</div>
-                )}
-              </div>
-              <div className="control">
-                <label htmlFor="image" style={{ color: "grey" }}>
-                  Meetup Image
-                </label>
-                <Field type="url" id="image" name="image" />
-                {errors.image && touched.image && (
-                  <div className="error-message">{errors.image}</div>
-                )}
-              </div>
-              <div className="control">
-                <label htmlFor="address" style={{ color: "grey" }}>
-                  Address
-                </label>
-                <Field type="text" id="address" name="address" />
-                {errors.address && touched.address && (
-                  <div className="error-message">{errors.address}</div>
-                )}
-              </div>
-              {/* {(isEditMode && values.date) || !isEditMode ? (
+              {errors.title && touched.title && (
+                <div className="error-message">{errors.title}</div>
+              )}
+            </div>
+            <div className="control">
+              <label htmlFor="image" style={{ color: "grey" }}>
+                Meetup Image
+              </label>
+              <Field type="url" id="image" name="image" />
+              {errors.image && touched.image && (
+                <div className="error-message">{errors.image}</div>
+              )}
+            </div>
+            <div className="control">
+              <label htmlFor="address" style={{ color: "grey" }}>
+                Address
+              </label>
+              <Field type="text" id="address" name="address" />
+              {errors.address && touched.address && (
+                <div className="error-message">{errors.address}</div>
+              )}
+            </div>
+            {/* {(isEditMode && values.date) || !isEditMode ? (
                 <div className="control">
                   <label htmlFor="date" style={{ color: "grey" }}>
                     Date
@@ -102,28 +99,27 @@ function Newmeetups(props) {
                 </div>
               ) : null} */}
 
-              <div className="control">
-                <label htmlFor="description" style={{ color: "grey" }}>
-                  Description
-                </label>
-                <Field
-                  component="textarea"
-                  id="description"
-                  name="description"
-                  rows="5"
-                />
-                {errors.description && touched.description && (
-                  <div className="error-message">{errors.description}</div>
-                )}
-              </div>
+            <div className="control">
+              <label htmlFor="description" style={{ color: "grey" }}>
+                Description
+              </label>
+              <Field
+                component="textarea"
+                id="description"
+                name="description"
+                rows="5"
+              />
+              {errors.description && touched.description && (
+                <div className="error-message">{errors.description}</div>
+              )}
+            </div>
 
-              <div className="actions">
-                <button type="submit">
-                  {isEditMode ? "Update Meetup" : "Add Meetup"}
-                </button>
-              </div>
-            </Form>
-          )
+            <div className="actions">
+              <button type="submit">
+                {isEditMode ? "Update Meetup" : "Add Meetup"}
+              </button>
+            </div>
+          </Form>
         )}
       </Formik>
     </div>

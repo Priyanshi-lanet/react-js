@@ -37,7 +37,6 @@ function SignUp() {
   };
 
   const getUrlFromFirebase = async (image) => {
-    console.log("getUrlFromFirebase", imageUpload);
     if (imageUpload == null) return;
     const storageRef = ref(storage, `Img/${uuidv4()}`);
     try {
@@ -56,7 +55,6 @@ function SignUp() {
         createUser(values.email, values.password, values.name, imageUrl);
         history("/all-meetup");
       });
-      console.log("values.image)", imageUpload);
 
       // Handle form submission
     } catch (error) {
