@@ -5,39 +5,30 @@ import { UserAuth } from "../context/AuthContext";
 import firebase from "firebase/app";
 import "firebase/database";
 import { database } from "../../firebase";
+import { onValue, ref, set } from "firebase/database";
 
 const Searchbar = () => {
   const { user } = UserAuth();
   const [username, setUsername] = useState("");
   const [userer, setUser] = useState(null);
   const [err, setErr] = useState(false);
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const snapshot = await database
-          .ref("users")
-          .orderByChild("displayName")
-          .equalTo(username)
-          .once("value");
-        if (snapshot.exists()) {
-          snapshot.forEach((childSnapshot) => {
-            setUser(childSnapshot.val());
-          });
-        } else {
-          setUser(null);
-          setErr(true);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setErr(true);
-      }
-    };
-
-    if (username !== "") {
-      fetchData();
-    }
-  }, [username]);
+    const usersRef = ref(database, "users");
+    onValue(usersRef, (snapshot) => {
+      let records = [];
+      snapshot.forEach((element) => {
+        let data = element.val();
+        records.push({ data: data });
+      });
+      const filterRecordsByName = (records, name) => {
+        return records.filter((record) => {
+          return record.data.name.toLowerCase() === name.toLowerCase();
+        });
+      };
+      const filteredRecords = filterRecordsByName(records, username);
+      setUser(username?.length ? filteredRecords : records);
+    });
+  }, [database, username]);
 
   const handleKey = (e) => {
     if (e.code === "Enter") {
@@ -51,9 +42,51 @@ const Searchbar = () => {
       setUsername(username.trim());
     }
   };
+  const handleSelect = async (currentUser) => {
+    const combinedId =
+      currentUser.data.id > user.uid
+        ? currentUser.data.id + user.uid
+        : user.uid + currentUser.data.id;
+    try {
+      const chatRef = ref(database, "chats/" + combinedId);
+      onValue(chatRef, async (snapshot) => {
+        if (!snapshot.exists()) {
+          // Create a chat in the chats collection
+          await set(ref(database, "chats/" + combinedId), {
+            message: ["text"],
+          });
+          await set(
+            ref(
+              database,
+              "userChats/" + currentUser.data.id + "/" + combinedId
+            ),
+            {
+              userInfo: {
+                id: currentUser.data.id,
+                name: currentUser.data.name,
+                profile: currentUser.data.profile,
+              },
+              date: new Date().toISOString(),
+            }
+          );
+          await set(ref(database, "userChats/" + user.uid + "/" + combinedId), {
+            userInfo: {
+              id: currentUser.data.id,
+              name: currentUser.data.name,
+              profile: currentUser.data.profile,
+            },
+            date: new Date().toISOString(),
+          });
+        }
+      });
 
-  const handleSelect = () => {
-    // Define your handleSelect logic here
+      // Check if the chat already exists
+    } catch (err) {
+      console.error(err);
+    }
+
+    // setUser(null);
+    // setUsername("");
   };
 
   return (
@@ -68,14 +101,21 @@ const Searchbar = () => {
         />
       </div>
       {err && <span>User not found!</span>}
-      {userer && (
-        <div className="userChat" onClick={handleSelect}>
-          <img src={userer.photoURL} alt="" />
-          <div className="userChatInfo">
-            <span>{userer.displayName}</span>
+      {userer &&
+        userer.map((userDetails, index) => (
+          <div
+            key={index}
+            className="userChat"
+            onClick={() => {
+              handleSelect(userDetails);
+            }}
+          >
+            <img src={userDetails.data.profile} alt="" />
+            <div className="userChatInfo">
+              <span>{userDetails.data.name}</span>
+            </div>
           </div>
-        </div>
-      )}
+        ))}
     </div>
   );
 };
