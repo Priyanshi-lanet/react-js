@@ -55,21 +55,7 @@ const Searchbar = () => {
           await set(ref(database, "chats/" + combinedId), {
             message: ["text"],
           });
-          await set(
-            ref(
-              database,
-              "userChats/" + currentUser.data.id + "/" + combinedId
-            ),
-            {
-              userInfo: {
-                id: currentUser.data.id,
-                name: currentUser.data.name,
-                profile: currentUser.data.profile,
-              },
-              date: new Date().toISOString(),
-            }
-          );
-          await set(ref(database, "userChats/" + user.uid + "/" + combinedId), {
+          await set(ref(database, "userChats/" + combinedId), {
             userInfo: {
               id: currentUser.data.id,
               name: currentUser.data.name,
