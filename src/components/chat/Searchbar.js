@@ -51,7 +51,6 @@ const Searchbar = () => {
       const chatRef = ref(database, "chats/" + combinedId);
       onValue(chatRef, async (snapshot) => {
         if (!snapshot.exists()) {
-          // Create a chat in the chats collection
           await set(ref(database, "chats/" + combinedId), {
             message: ["text"],
           });
@@ -65,12 +64,9 @@ const Searchbar = () => {
           });
         }
       });
-
-      // Check if the chat already exists
     } catch (err) {
       console.error(err);
     }
-
     // setUser(null);
     // setUsername("");
   };

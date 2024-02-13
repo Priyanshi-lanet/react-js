@@ -24,7 +24,7 @@ function AllMeetups() {
     }
   };
   const cardDetails = useSelector((state) => state.card.cardList);
-  console.log("cardDetails", cardDetails);
+  console.log("cardDetails", JSON.stringify(cardDetails, null, 2));
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

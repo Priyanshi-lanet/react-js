@@ -33,7 +33,7 @@ export function showMessage(options) {
 }
 export function getCardList(searchTerm = "", userId) {
   return (dispatch) => {
-    fetch("https://fir-project-f7ce8-default-rtdb.firebaseio.com/users.json")
+    fetch("https://reactjs-834f1-default-rtdb.firebaseio.com/users.json")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -49,54 +49,60 @@ export function getCardList(searchTerm = "", userId) {
         console.log(JSON.stringify(meetups, null, 2));
         const filtered = meetups.filter((item) => item.id === userId);
         console.log("filtered", filtered);
-        // const transformedCardDetails = filtered.map((item) => {
-        //   const newObj = {};
-        //   newObj[item.id] = {
-        //     cards: Object.entries(item)
-        //       .filter(([key]) => key !== "id" && key !== "email")
-        //       .map(([key, value]) => ({ id: key, ...value })),
-        //     email: item.email,
-        //   };
-        //   return newObj;
-        // });
-        const convertedData = filtered.map((item) => {
-          const { id, email, name, profile, ...rest } = item;
-          return {
-            id,
-            email,
-            name,
-            profile,
-            ...rest,
+        const transformedCardDetails = filtered.map((item) => {
+          const newObj = {};
+          newObj[item.id] = {
+            cards: Object.entries(item)
+              .filter(
+                ([key]) =>
+                  key !== "id" &&
+                  key !== "email" &&
+                  key !== "name" &&
+                  key !== "profile"
+              )
+              .map(([key, value]) => ({ id: key, ...value })),
+            email: item.email,
+            name: item.name,
+            profile: item.profile,
           };
+          return newObj;
         });
+        // const convertedData = filtered.map((item) => {
+        //   const { id, email, name, profile, ...rest } = item;
+        //   return {
+        //     id,
+        //     email,
+        //     name,
+        //     profile,
+        //     ...rest,
+        //   };
+        // });
 
-        function searchCards(transformedCardDetails, searchTerm) {
-          return transformedCardDetails.map((item) => {
-            const newObj = {};
-            newObj[Object.keys(item)[0]] = {
-              cards: item[Object.keys(item)[0]].cards.filter((card) =>
-                Object.values(card).some(
-                  (value) =>
-                    typeof value === "string" &&
-                    value.toLowerCase().includes(searchTerm.toLowerCase())
-                )
-              ),
-              email: item[Object.keys(item)[0]].email,
-            };
-            return newObj;
-          });
-        }
-        const filteredTransformedCardDetails = searchCards(
-          convertedData,
-          searchTerm
-        );
-        console.log("convertedData", convertedData);
+        // function searchCards(transformedCardDetails, searchTerm) {
+        //   return transformedCardDetails.map((item) => {
+        //     const newObj = {};
+        //     newObj[Object.keys(item)[0]] = {
+        //       cards: item[Object.keys(item)[0]].cards.filter((card) =>
+        //         Object.values(card).some(
+        //           (value) =>
+        //             typeof value === "string" &&
+        //             value.toLowerCase().includes(searchTerm.toLowerCase())
+        //         )
+        //       ),
+        //       email: item[Object.keys(item)[0]].email,
+        //     };
+        //     return newObj;
+        //   });
+        // }
+        // const filteredTransformedCardDetails = searchCards(
+        //   convertedData,
+        //   searchTerm
+        // );
+        // console.log("convertedData", convertedData);
 
         dispatch({
           type: GET_CARD_LIST,
-          payload: searchTerm?.length
-            ? filteredTransformedCardDetails
-            : convertedData,
+          payload: transformedCardDetails,
           // : transformedCardDetails,
         });
       })
