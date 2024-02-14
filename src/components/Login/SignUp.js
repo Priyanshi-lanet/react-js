@@ -86,17 +86,6 @@ function SignUp() {
               </div>
 
               <Field
-                type="file"
-                name="image"
-                onChange={(event) => {
-                  setimageUpload(event.currentTarget.files[0]);
-                }}
-              />
-              <div className="error-message">
-                <ErrorMessage name="image" />
-              </div>
-
-              <Field
                 className="login-input"
                 type="email"
                 id="email"
@@ -126,7 +115,17 @@ function SignUp() {
               <div className="error-message">
                 <ErrorMessage name="password" />
               </div>
-
+              <Field
+                className="login-input"
+                type="file"
+                name="image"
+                onChange={(event) => {
+                  setimageUpload(event.currentTarget.files[0]);
+                }}
+              />
+              <div className="error-message">
+                <ErrorMessage name="image" />
+              </div>
               <button
                 type="submit"
                 className="login-button"

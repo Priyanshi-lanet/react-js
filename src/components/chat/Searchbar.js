@@ -5,14 +5,14 @@ import { UserAuth } from "../context/AuthContext";
 import firebase from "firebase/app";
 import "firebase/database";
 import { database } from "../../firebase";
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref, set, runTransaction } from "firebase/database";
 
 const Searchbar = () => {
   const { user } = UserAuth();
   const [username, setUsername] = useState("");
   const [userer, setUser] = useState(null);
   const [err, setErr] = useState(false);
-
+  console.log("userer", userer);
   useEffect(() => {
     const usersRef = ref(database, "users");
     onValue(usersRef, (snapshot) => {
@@ -54,7 +54,7 @@ const Searchbar = () => {
       onValue(chatRef, async (snapshot) => {
         if (!snapshot.exists()) {
           await set(ref(database, "chats/" + combinedId), {
-            message: ["text"],
+            message: [{ id: "text" }],
           });
           await set(ref(database, "userChats/" + combinedId), {
             userInfo: {
@@ -85,7 +85,7 @@ const Searchbar = () => {
         />
       </div>
       {err && <span>User not found!</span>}
-      {/* {userer &&
+      {userer &&
         userer.map((userDetails, index) => (
           <div
             key={index}
@@ -99,7 +99,7 @@ const Searchbar = () => {
               <span>{userDetails.data.name}</span>
             </div>
           </div>
-        ))} */}
+        ))}
     </div>
   );
 };

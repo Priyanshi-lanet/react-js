@@ -1,17 +1,14 @@
-import { get, ref } from "firebase/database";
-import { database } from "../../../../firebase";
-import UniversalToast from "../../../UniversalToast";
-import React from "react";
+import { useContext } from "react";
+import { UserAuth } from "../../../context/AuthContext";
 
 export const CHANGE_USER = "CHANGE_USER";
 
-export function getChatdata(user) {
+export function getChatdata(user, currentUser) {
   console.log("user", user);
   return (dispatch) => {
     dispatch({
       type: CHANGE_USER,
-      payload: user,
-      // : transformedCardDetails,
+      payload: { user, currentUser },
     });
   };
 }

@@ -4,10 +4,12 @@ import { database } from "../../firebase";
 import { onValue, ref } from "firebase/database";
 import { useDispatch } from "react-redux";
 import { getChatdata } from "../store/actions/chat";
+import { UserAuth } from "../context/AuthContext";
 
 const Chats = () => {
   const dispatch = useDispatch();
-  const [user, setuser] = useState([]);
+  const [s_user, setuser] = useState([]);
+  const { user } = UserAuth();
   useEffect(() => {
     let records = [];
     console.log("insideeee");
@@ -31,12 +33,12 @@ const Chats = () => {
   }, [database]);
   const handleSelect = (params) => {
     console.log("params", params);
-    dispatch(getChatdata(params));
+    dispatch(getChatdata(params, user));
   };
   console.log("user", user);
   return (
     <div>
-      {user.map(
+      {s_user.map(
         (record, index) =>
           record.data.userInfo && (
             <div
