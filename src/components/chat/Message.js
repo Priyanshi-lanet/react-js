@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./ChatScreen.css";
-const Message = () => {
+import { useSelector } from "react-redux";
+import { onValue, ref } from "firebase/database";
+import { database } from "../../firebase";
+import { UserAuth } from "../context/AuthContext";
+
+const Message = ({ messages }) => {
+  // useEffect(() => {
+  //   ref.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [message]);
+
   return (
     <div className="message owner">
       <div className="messageInfo">

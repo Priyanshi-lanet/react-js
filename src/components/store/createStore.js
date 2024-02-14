@@ -2,10 +2,12 @@ import React from "react";
 import ReduxThunk from "redux-thunk";
 import { createStore, compose, combineReducers, applyMiddleware } from "redux";
 import cardReducer from "./actions/card/reducer";
+import chatReducer from "./actions/chat/reducer";
 
 function createReducer() {
   const rootReducer = combineReducers({
     card: cardReducer,
+    chat: chatReducer,
   });
   return (state, action) => {
     if (action.type === "[USER] LOGGED OUT") {

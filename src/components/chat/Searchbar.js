@@ -85,7 +85,7 @@ const Searchbar = () => {
         />
       </div>
       {err && <span>User not found!</span>}
-      {userer &&
+      {/* {userer &&
         userer.map((userDetails, index) => (
           <div
             key={index}
@@ -99,7 +99,7 @@ const Searchbar = () => {
               <span>{userDetails.data.name}</span>
             </div>
           </div>
-        ))}
+        ))} */}
     </div>
   );
 };
