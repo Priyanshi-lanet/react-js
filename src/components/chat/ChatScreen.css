@@ -31,13 +31,13 @@
     align-items: center;
 
     .logo1 {
-      color: #5d5b8d;
+      color: #f8b283;
       font-weight: bold;
       font-size: 24px;
     }
 
     .title {
-      color: #5d5b8d;
+      color: #f8b283;
       font-size: 12px;
     }
 
@@ -87,7 +87,7 @@
 }
 
 .home {
-  background-color: #fff;
+  background-color: #000;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -96,8 +96,9 @@
   .container {
     border: 1px solid;
     border-radius: 10px;
-    width: 65%;
-    height: 80%;
+    width: 95%;
+    height: 85%;
+
     display: flex;
     overflow: hidden;
     @include tablet {
@@ -120,6 +121,7 @@
 
         .logo1 {
           font-weight: bold;
+
           @include tablet {
             display: none;
           }
@@ -282,7 +284,8 @@
       }
 
       .input {
-        height: 30px;
+        height: 45px;
+        margin-bottom: 10px;
         background-color: white;
         padding: 10px;
         display: flex;

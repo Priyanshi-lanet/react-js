@@ -55,7 +55,7 @@ const Chats = () => {
             >
               <img src={photoURL} alt={`${displayName}'s Photo`} />
               <div className="userChatInfo">
-                <span>{displayName}</span>
+                <span style={{ fontFamily: "Playfair" }}>{displayName}</span>
                 <p>{lastMessage}</p> {/* Display the last message */}
               </div>
             </div>

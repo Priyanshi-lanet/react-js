@@ -7,19 +7,25 @@ import { IoIosMore } from "react-icons/io";
 import Messages from "./Messages";
 import TextInput from "./TextInput";
 import { useSelector } from "react-redux";
+import { UserAuth } from "../context/AuthContext";
 const ChatScreenSidebar = () => {
   const data = useSelector((state) => state.chat);
+
+  const { user } = UserAuth();
+  console.log(data);
   return (
     <div className="chatbar">
       <div className="chatInfo">
-        <span>Jane</span>
+        <span>
+          {data?.chatId ? data.user.displayName : user?.email?.split("@")[0]}
+        </span>
         <div className="chatIcons">
           <BsFillCameraVideoFill />
           <IoMdPersonAdd />
           <IoIosMore />
         </div>
       </div>
-      {data?.chatId && <Messages />}
+      {data?.chatId ? <Messages /> : <div className="messages" />}
 
       <TextInput />
     </div>

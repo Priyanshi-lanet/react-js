@@ -86,7 +86,7 @@
 }
 
 .dropdown-content a:hover {
-  background-color: #f1f1f1;
+  background-color: #f8b283;
 }
 
 .dropdown:hover .dropdown-content {
@@ -106,7 +106,7 @@
   padding: 5px 10px;
 }
 .dropdown-links a:hover {
-  background-color: #f1f1f1;
+  background-color: #f8b283;
 }
 .dropdown-content {
   background-color: #f9f9f9;
@@ -115,7 +115,7 @@
   z-index: 1;
 }
 .dropdown-links a:hover {
-  background-color: #f1f1f1;
+  background-color: #f8b283;
 }
 
 .dropdown5 {

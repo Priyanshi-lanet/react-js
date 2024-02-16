@@ -136,7 +136,7 @@ const Searchbar = () => {
             >
               <img src={s_user.profile} alt="" />
               <div className="userChatInfo">
-                <span>{s_user.name}</span>
+                <span style={{ fontFamily: "Playfair" }}>{s_user.name}</span>
               </div>
             </div>
           );
