@@ -31,7 +31,7 @@ export function showMessage(options) {
     });
   };
 }
-export function getCardList(searchTerm = "", userId) {
+export function getCardList(searchTerm, userId) {
   return (dispatch) => {
     fetch("https://reactjs-834f1-default-rtdb.firebaseio.com/users.json")
       .then((response) => {
@@ -66,43 +66,46 @@ export function getCardList(searchTerm = "", userId) {
           };
           return newObj;
         });
-        // const convertedData = filtered.map((item) => {
-        //   const { id, email, name, profile, ...rest } = item;
-        //   return {
-        //     id,
-        //     email,
-        //     name,
-        //     profile,
-        //     ...rest,
-        //   };
-        // });
 
-        // function searchCards(transformedCardDetails, searchTerm) {
-        //   return transformedCardDetails.map((item) => {
-        //     const newObj = {};
-        //     newObj[Object.keys(item)[0]] = {
-        //       cards: item[Object.keys(item)[0]].cards.filter((card) =>
-        //         Object.values(card).some(
-        //           (value) =>
-        //             typeof value === "string" &&
-        //             value.toLowerCase().includes(searchTerm.toLowerCase())
-        //         )
-        //       ),
-        //       email: item[Object.keys(item)[0]].email,
-        //     };
-        //     return newObj;
-        //   });
-        // }
-        // const filteredTransformedCardDetails = searchCards(
-        //   convertedData,
-        //   searchTerm
-        // );
-        // console.log("convertedData", convertedData);
+        const convertedData = filtered.map((item) => {
+          const { id, email, name, profile, ...rest } = item;
+          return {
+            id,
+            email,
+            name,
+            profile,
+            ...rest,
+          };
+        });
+
+        function searchCards(transformedCardDetails, searchTerm) {
+          return transformedCardDetails.map((item) => {
+            const newObj = {};
+            newObj[Object.keys(item)[0]] = {
+              cards: item[Object.keys(item)[0]].cards.filter((card) =>
+                Object.values(card).some(
+                  (value) =>
+                    typeof value === "string" &&
+                    value.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+              ),
+              email: item[Object.keys(item)[0]].email,
+              name: item[Object.keys(item)[0]].name,
+              profile: item[Object.keys(item)[0]].profile,
+            };
+            return newObj;
+          });
+        }
+        const filteredTransformedCardDetails = searchCards(
+          transformedCardDetails,
+          searchTerm
+        );
 
         dispatch({
           type: GET_CARD_LIST,
-          payload: transformedCardDetails,
-          // : transformedCardDetails,
+          payload: searchTerm?.length
+            ? filteredTransformedCardDetails
+            : transformedCardDetails,
         });
       })
       .catch((error) => {
