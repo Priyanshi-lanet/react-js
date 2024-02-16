@@ -3,7 +3,7 @@ import "./ChatScreen.css";
 import { UserAuth } from "../context/AuthContext";
 
 const NavScreen = () => {
-  const { user, logout } = UserAuth();
+  const { logout } = UserAuth();
   return (
     <div className="navbar">
       <span className="logo1">Chat Screen</span>

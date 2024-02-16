@@ -1,6 +1,5 @@
 import React from "react";
 import "./ChatScreen.css";
-import { FaCamera } from "react-icons/fa";
 import { BsFillCameraVideoFill } from "react-icons/bs";
 import { IoMdPersonAdd } from "react-icons/io";
 import { IoIosMore } from "react-icons/io";
@@ -12,7 +11,7 @@ const ChatScreenSidebar = () => {
   const data = useSelector((state) => state.chat);
 
   const { user } = UserAuth();
-  console.log(data);
+
   return (
     <div className="chatbar">
       <div className="chatInfo">

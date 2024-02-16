@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "./ChatScreen.css";
 import { useSelector } from "react-redux";
-import { onValue, ref } from "firebase/database";
-import { database } from "../../firebase";
 import { UserAuth } from "../context/AuthContext";
-import { CiImageOn } from "react-icons/ci";
 
 const Message = ({ message }) => {
   const { user } = UserAuth();
   const ref = useRef();
+
   const data = useSelector((state) => state.chat.user);
+
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
+
   const renderDoucumnet = (fileName) => {
     return (
       <div
@@ -33,6 +33,7 @@ const Message = ({ message }) => {
       </div>
     );
   };
+
   return (
     <div
       ref={ref}
@@ -46,12 +47,13 @@ const Message = ({ message }) => {
                 ? user?.photoURL
                 : "https://images.unsplash.com/photo-1565034946487-077786996e27?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               : data?.user?.photoURL
+              ? data?.user?.photoURL
+              : "https://media.istockphoto.com/id/1370529942/photo/portrait-of-a-young-man-standing-with-his-arms-crossed-on-graduation-day.jpg?s=2048x2048&w=is&k=20&c=mOaK_cxOgT34GoxhylYtxsUR1UTmentNQrakPpGqyDs="
           }
           alt=""
         />
         <span>just now</span>
       </div>
-
       <div className="messageContent">
         {message.text && <p>{message.text}</p>}
         {message.img && <img src={message.img} alt="" />}

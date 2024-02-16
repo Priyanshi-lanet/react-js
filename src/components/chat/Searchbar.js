@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ChatScreen.css";
-import Chats from "./Chats";
 import { UserAuth } from "../context/AuthContext";
-import firebase from "firebase/app";
 import "firebase/database";
-import { database } from "../../firebase";
-import { onValue, ref, set, runTransaction } from "firebase/database";
 import {
   collection,
   doc,
@@ -20,31 +16,15 @@ import {
 const Searchbar = () => {
   const { user } = UserAuth();
   const db = getFirestore();
+
   const [username, setUsername] = useState("");
   const [userer, setUser] = useState(null);
   const [err, setErr] = useState(false);
   const [list, setlist] = useState([]);
 
-  // useEffect(() => {
-  //   const usersRef = ref(database, "users");
-  //   onValue(usersRef, (snapshot) => {
-  //     let records = [];
-  //     snapshot.forEach((element) => {
-  //       let data = element.val();
-  //       records.push({ data: data });
-  //     });
-  //     console.log("inside Search", records);
-  //     const filterRecordsByName = (records, name) => {
-  //       return records.filter((record) => {
-  //         return record.data.name.toLowerCase() === name.toLowerCase();
-  //       });
-  //     };
-  //     const filteredRecords = filterRecordsByName(records, username);
-  //     setUser(username?.length ? filteredRecords : records);
-  //   });
-  // }, [database, username]);
   const bookCollectionRef = collection(db, "users");
   const bookCollectionRef1 = collection(db, "usersChats");
+
   useEffect(() => {
     const callApi = async () => {
       try {
@@ -57,9 +37,9 @@ const Searchbar = () => {
         console.error("Error updating document:", error);
       }
     };
-
     callApi();
   }, []);
+
   const handleKey = (e) => {
     if (e.code === "Enter") {
       e.preventDefault();
@@ -72,6 +52,7 @@ const Searchbar = () => {
       setUsername(username.trim());
     }
   };
+
   const handleSelect = async (s_user) => {
     const combinedId =
       user.uid > s_user.uid ? user.uid + s_user.uid : s_user.uid + user.uid;
@@ -90,7 +71,7 @@ const Searchbar = () => {
         },
         [`${combinedId}.date`]: serverTimestamp(),
       };
-      //updatett
+
       const userChatsRef = doc(db, `usersChats/${user.uid}`);
       await updateDoc(userChatsRef, updateData);
 
