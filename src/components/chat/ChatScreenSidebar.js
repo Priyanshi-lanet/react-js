@@ -18,6 +18,7 @@ const ChatScreenSidebar = () => {
         </div>
       </div>
       <Messages />
+
       <TextInput />
     </div>
   );

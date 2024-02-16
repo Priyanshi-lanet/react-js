@@ -2,37 +2,26 @@ import React, { useEffect, useState } from "react";
 import "./ChatScreen.css";
 import Message from "./Message";
 import { useSelector } from "react-redux";
-import { database } from "../../firebase";
-import { onValue, ref } from "firebase/database";
+import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 const Messages = () => {
-  const [messages, setmessages] = useState([]);
-  const data = useSelector((state) => state.chat.chatId);
+  const data = useSelector((state) => state?.chat);
+  const [messages, setMessages] = useState([]);
+  const db = getFirestore();
   useEffect(() => {
-    let records = [];
+    const unSub = onSnapshot(doc(db, `chats/${data.chatId}`), (doc) => {
+      doc.exists() && setMessages(doc.data().messages);
+    });
 
-    const usersRef = ref(database, "chats");
-    onValue(
-      usersRef,
-      (snapshot) => {
-        console.log("message", snapshot); // Corrected to log the snapshot
-
-        snapshot.forEach((element) => {
-          let data = element.val();
-          records.push({ data: data });
-        });
-        setmessages(records);
-      },
-      (error) => {
-        console.error("Error fetching data:", error);
+    return () => {
+      if (data.chatId) {
+        unSub();
       }
-    );
-    console.log("records", JSON.stringify(records, null, 2));
-  }, [data]);
+    };
+  }, [data.chatId]);
   return (
     <div className="messages">
       {messages.map((m) => {
-        console.log("m", m);
-        <Message messages={m.data} />;
+        return <Message message={m} key={m.id} />;
       })}
     </div>
   );

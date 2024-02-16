@@ -8,6 +8,7 @@ import {
 } from "firebase/auth";
 import { auth, database } from "../../firebase";
 import { set, ref } from "firebase/database";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 const UserContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
@@ -34,6 +35,22 @@ export const AuthContextProvider = ({ children }) => {
         id: userId,
         profile: image,
       };
+      const db = getFirestore();
+
+      const userRef = doc(db, "users", userId);
+      const message1 = {
+        uid: userId,
+        id: 1,
+      };
+      const userChatsRef = doc(db, "usersChats", userId);
+      await setDoc(userChatsRef, message1);
+      const message = {
+        uid: userId,
+        name,
+        email,
+        profile: image,
+      };
+      await setDoc(userRef, message);
       const random5DigitNumber = generateRandom5DigitNumber();
       await set(ref(database, `users/${userId}`), userData);
       await set(ref(database, `userChats/${userId}`), {
