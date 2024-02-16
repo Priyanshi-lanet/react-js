@@ -26,7 +26,6 @@ const ChatScreenSidebar = () => {
         </div>
       </div>
       {data?.chatId ? <Messages /> : <div className="messages" />}
-
       <TextInput />
     </div>
   );

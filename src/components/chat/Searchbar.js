@@ -86,7 +86,7 @@ const Searchbar = () => {
         [`${combinedId}.userInfo`]: {
           uid: s_user.uid,
           displayName: s_user.name,
-          photoURL: s_user.profile,
+          photoURL: s_user?.profile,
         },
         [`${combinedId}.date`]: serverTimestamp(),
       };

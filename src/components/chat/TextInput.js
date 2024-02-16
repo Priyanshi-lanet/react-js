@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { UserAuth } from "../context/AuthContext";
 import { storage } from "../../firebase";
 import { v4 as uuid } from "uuid";
-import { getDownloadURL, uploadBytes, ref } from "firebase/storage";
+import { getDownloadURL, uploadBytes, ref, getStorage } from "firebase/storage";
 import {
   Timestamp,
   arrayUnion,
@@ -19,10 +19,10 @@ import {
 const TextInput = () => {
   const { user } = UserAuth();
   const db = getFirestore();
-
+  const storage = getStorage();
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
-
+  // console.log("img", img);
   const data = useSelector((state) => state.chat);
   const getUrlFromFirebase = async (image) => {
     if (image == null) return; // Check if image is null
@@ -36,21 +36,135 @@ const TextInput = () => {
       throw error;
     }
   };
+  const getFileExt = (type) => {
+    console.log("tt", type);
+    return type === "image/jpeg" || type === "image/png"
+      ? "image"
+      : type === "video/mp4"
+      ? "video"
+      : type === "text/csv"
+      ? "csv"
+      : type === "application/pdf"
+      ? "pdf"
+      : type === "audio/mpeg"
+      ? "audio"
+      : "";
+  };
+  async function uploadPDFAndSaveURL(file) {
+    console.log("file", file);
+    try {
+      // Upload file to Firebase Storage
+      const storageRef = ref(storage, file.name);
 
+      // Check the console for storageRef value
+      try {
+        await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(storageRef);
+        console.log("File uploaded successfully!", downloadURL);
+        return downloadURL;
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+      // Get download URL of the uploaded file
+
+      // Save download URL to Firestore
+      // await firestore.collection("pdfs").add({
+      //   name: file.name,
+      //   url: downloadURL,
+      // });
+
+      console.log("PDF uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading PDF:", error);
+      throw error;
+    }
+  }
+  const uploadAudioAndSaveURL = async (file) => {
+    console.log(file);
+    const storageRef = ref(storage, file.name);
+    try {
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      console.log("audio uploaded successfully!", downloadURL);
+      return downloadURL;
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
   const handleSend = async () => {
     if (img) {
-      const imageUrl = await getUrlFromFirebase(img);
-
+      console.log("img", img.type);
+      const fileExt = getFileExt(img.type);
+      console.log("fileExt", fileExt);
       const ChatsRef = doc(db, `chats/${data.chatId}`);
-      await updateDoc(ChatsRef, {
-        messages: arrayUnion({
-          id: uuid(),
-          text,
-          senderId: user.uid,
-          date: Timestamp.now(),
-          img: imageUrl,
-        }),
-      });
+      switch (fileExt) {
+        case "image":
+          const imageUrl = await getUrlFromFirebase(img);
+          await updateDoc(ChatsRef, {
+            messages: arrayUnion({
+              id: uuid(),
+              text,
+              senderId: user.uid,
+              date: Timestamp.now(),
+              img: imageUrl,
+            }),
+          });
+          break;
+        case "pdf":
+          const downloadURLPdf = await uploadPDFAndSaveURL(img);
+          await updateDoc(ChatsRef, {
+            messages: arrayUnion({
+              id: uuid(),
+              text,
+              senderId: user.uid,
+              date: Timestamp.now(),
+              pdf: downloadURLPdf,
+            }),
+          });
+          break;
+        case "audio":
+          const downloadURLaudio = await uploadAudioAndSaveURL(img);
+          console.log("downloadURL", downloadURLaudio);
+          await updateDoc(ChatsRef, {
+            messages: arrayUnion({
+              id: uuid(),
+              text,
+              senderId: user.uid,
+              date: Timestamp.now(),
+              audio: downloadURLaudio,
+            }),
+          });
+          break;
+        case "video":
+          const downloadURLvideo = await uploadAudioAndSaveURL(img);
+          console.log("downloadURL", downloadURLvideo);
+          await updateDoc(ChatsRef, {
+            messages: arrayUnion({
+              id: uuid(),
+              text,
+              senderId: user.uid,
+              date: Timestamp.now(),
+              video: downloadURLvideo,
+            }),
+          });
+          break;
+
+        default:
+          const downloadURLDefault = await uploadAudioAndSaveURL(img);
+
+          await updateDoc(ChatsRef, {
+            messages: arrayUnion({
+              id: uuid(),
+              text,
+              senderId: user.uid,
+              date: Timestamp.now(),
+              default: downloadURLDefault,
+            }),
+          });
+          break;
+      }
+      // const downloadURL = await uploadPDFAndSaveURL(file);
+      // console.log("Download URL:", downloadURL);
     } else {
       const ChatsRef = doc(db, `chats/${data.chatId}`);
       await updateDoc(ChatsRef, {

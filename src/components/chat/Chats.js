@@ -45,7 +45,7 @@ const Chats = () => {
           user.userInfo.displayName &&
           user.userInfo.photoURL
         ) {
-          const { displayName, photoURL } = user.userInfo;
+          const { displayName, photoURL } = user?.userInfo;
 
           return (
             <div
