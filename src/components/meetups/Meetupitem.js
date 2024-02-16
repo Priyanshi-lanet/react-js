@@ -29,6 +29,7 @@ function Meetupitem(props) {
   }
 
   const handleClick = (data) => {
+    console.log("data", data);
     history("/new-meetup", {
       state: {
         data: data,
@@ -66,15 +67,6 @@ function Meetupitem(props) {
           scrollPaddingRight: "5px",
         }}
       >
-        {/* <div>
-          <h1
-            style={{
-              fontSize: "1rem",
-            }}
-          >
-            {props.title}
-          </h1>
-        </div> */}
         <div
           style={{
             display: "flex",
@@ -115,11 +107,6 @@ function Meetupitem(props) {
                   style={{ marginLeft: "15", stroke: "none", color: "grey" }}
                 />
               }
-              {/* <RiDeleteBin5Line
-                onClick={() => handledelete(props)}
-                style={{ marginLeft: "8", stroke: "none", color: "grey" }}
-              // /> */}
-              {/* //Edited for Delete Functionlity */}
             </button>
           </div>
         </div>

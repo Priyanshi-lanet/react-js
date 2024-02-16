@@ -14,7 +14,7 @@ function Newmeetups(props) {
     image: "",
     address: "",
     description: "",
-    // date: new Date(),
+    date: new Date(),
   };
 
   const onSubmit = (values, { resetForm }) => {
@@ -23,7 +23,6 @@ function Newmeetups(props) {
     } else {
       props.onAddMeetup(values);
     }
-
     resetForm();
   };
 
@@ -38,7 +37,7 @@ function Newmeetups(props) {
     image: Yup.string().url("Invalid URL").required("Image URL is required"),
     address: Yup.string().required("Address is required"),
     description: Yup.string().required("Description is required"),
-    // date: Yup.string().required("date is required"),
+    date: Yup.string().required("date is required"),
   });
 
   return (
@@ -80,24 +79,24 @@ function Newmeetups(props) {
                 <div className="error-message">{errors.address}</div>
               )}
             </div>
-            {/* {(isEditMode && values.date) || !isEditMode ? (
-                <div className="control">
-                  <label htmlFor="date" style={{ color: "grey" }}>
-                    Date
-                  </label>
-                  <DatePicker
-                    id="date"
-                    selected={isEditMode ? new Date(values.date) : values.date}
-                    onChange={(date) => setFieldValue("date", date)}
-                    // onChange={(date) => console.log("date", date)}
-                    dateFormat="MM/dd/yyyy"
-                    className="custom-datepicker"
-                  />
-                  {errors.date && touched.date && (
-                    <div className="error-message">{errors.date}</div>
-                  )}
-                </div>
-              ) : null} */}
+            {
+              <div className="control">
+                <label htmlFor="date" style={{ color: "grey" }}>
+                  Date
+                </label>
+                <DatePicker
+                  id="date"
+                  selected={values.date}
+                  onChange={(date) => setFieldValue("date", date)}
+                  // onChange={(date) => console.log("date", date)}
+                  dateFormat="MM/dd/yyyy"
+                  className="custom-datepicker"
+                />
+                {errors.date && touched.date && (
+                  <div className="error-message">{errors.date}</div>
+                )}
+              </div>
+            }
 
             <div className="control">
               <label htmlFor="description" style={{ color: "grey" }}>

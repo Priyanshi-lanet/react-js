@@ -11,18 +11,10 @@ import { auth } from "../firebase";
 import Meetupitem from "../components/meetups/Meetupitem";
 
 function AllMeetups() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, logout } = UserAuth();
+
   const [searchTerm, setSearchTerm] = useState("");
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   const cardDetails = useSelector((state) => state.card.cardList);
 
   const [loading, setLoading] = useState(false);
