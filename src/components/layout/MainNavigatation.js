@@ -23,12 +23,8 @@ function MainNavigation() {
         setColor("White");
       }
     }
-
     window.addEventListener("resize", handleResize);
-
-    // Initial call to set color based on window width
     handleResize();
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };

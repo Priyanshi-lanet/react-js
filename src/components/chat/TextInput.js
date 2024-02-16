@@ -29,6 +29,7 @@ const TextInput = () => {
   const getUrlFromFirebase = async (image) => {
     if (image == null) return; // Check if image is null
     const storageRef = ref(storage, `chatImage/${uuid()}`);
+
     try {
       const snapshot = await uploadBytes(storageRef, image);
       const url = await getDownloadURL(snapshot.ref);
@@ -73,7 +74,6 @@ const TextInput = () => {
   }
 
   const uploadAudioAndSaveURL = async (file) => {
-    console.log(file);
     const storageRef = ref(storage, file.name);
     try {
       await uploadBytes(storageRef, file);
@@ -87,9 +87,7 @@ const TextInput = () => {
 
   const handleSend = async () => {
     if (img) {
-      console.log("img", img.type);
       const fileExt = getFileExt(img.type);
-      console.log("fileExt", fileExt);
       const ChatsRef = doc(db, `chats/${data.chatId}`);
       switch (fileExt) {
         case "image":
