@@ -36,7 +36,6 @@ function Meetupitem(props) {
       address: data.address,
       date: new Date(data.date),
     };
-    console.log("data", JSON.stringify(data, null, 2));
     history("/new-meetup", {
       state: {
         data: obj,

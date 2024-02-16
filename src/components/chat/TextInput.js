@@ -41,7 +41,6 @@ const TextInput = () => {
   };
 
   const getFileExt = (type) => {
-    console.log("tt", type);
     return type === "image/jpeg" || type === "image/png"
       ? "image"
       : type === "video/mp4"
