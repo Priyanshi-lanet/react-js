@@ -1,11 +1,9 @@
 import React, { useContext } from "react";
 import "./Meetupitem.css";
-// import "./card.css";
-
 import { CiEdit } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
-import { RiDeleteBin5Line } from "react-icons/ri";
+
 import FavouriteContext from "../store/actions/fav-context";
 
 function Meetupitem(props) {
@@ -24,15 +22,24 @@ function Meetupitem(props) {
         description: props.data.description,
         image: props.data.image,
         address: props.data.address,
+        date: new Date(props.data.date),
       });
     }
   }
 
   const handleClick = (data) => {
-    console.log("data", data);
+    let obj = {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      image: data.image,
+      address: data.address,
+      date: new Date(data.date),
+    };
+    console.log("data", JSON.stringify(data, null, 2));
     history("/new-meetup", {
       state: {
-        data: data,
+        data: obj,
         edit: true,
       },
     });
