@@ -51,11 +51,7 @@ export const AuthContextProvider = ({ children }) => {
         profile: image,
       };
       await setDoc(userRef, message);
-      const random5DigitNumber = generateRandom5DigitNumber();
       await set(ref(database, `users/${userId}`), userData);
-      await set(ref(database, `userChats/${userId}`), {
-        id: random5DigitNumber,
-      });
       localStorage.setItem("userToken", token);
       localStorage.setItem("userId", userId);
       return token;
