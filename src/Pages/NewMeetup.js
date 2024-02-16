@@ -1,44 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Newmeetups from "../components/meetups/Newmeetups";
 import Loading from "../components/Loader/Loading";
+import { auth, database } from "../firebase";
+import { push, ref, update } from "firebase/database";
 function NewMeetup(props) {
   const [loader, setloader] = useState(false);
   const location = useLocation();
   const history = useNavigate();
+  const [userId, setUserId] = useState(null);
 
-  function addMeetupHandler(meetupData) {
-    setloader(true);
-    fetch(
-      "https://fir-project-f7ce8-default-rtdb.firebaseio.com/meetups.json",
-      {
-        method: "POST",
-        body: JSON.stringify(meetupData),
-        headers: {
-          "Content-Type": "application/json",
-        },
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUserId(user.uid);
+      } else {
+        setUserId(null);
       }
-    ).then(() => {
-      setloader(false);
-      history("/all-meetup");
     });
-  }
-  function updateMeetupHandler(updatedMeetupData) {
-    setloader(true);
-    fetch(
-      `https://fir-project-f7ce8-default-rtdb.firebaseio.com/meetups/${updatedMeetupData.id}.json`,
-      {
-        method: "PATCH", // or "PUT" if you want to replace the existing data completely
-        body: JSON.stringify(updatedMeetupData),
-        headers: {
-          "Content-Type": "application/json",
-        },
+    return () => unsubscribe();
+  }, []);
+
+  const addMeetupHandler = async (meetupData) => {
+    try {
+      setloader(true);
+      if (!userId) {
+        console.error("User is not signed in");
+        return;
       }
-    ).then(() => {
-      setloader(false);
+      await push(ref(database, `users/${userId}`), meetupData);
+      console.log("Data added successfully");
       history("/all-meetup");
-    });
-  }
+      setloader(false);
+    } catch (error) {
+      setloader(false);
+      console.error("Error adding data:", error.message);
+    }
+  };
+
+  const updateMeetupHandler = async (updatedMeetupData) => {
+    const dataRef = ref(database, `users/${userId}/${updatedMeetupData.id}`);
+
+    try {
+      setloader(true);
+      await update(dataRef, updatedMeetupData);
+      console.log("Data updated successfully");
+      history("/all-meetup");
+      setloader(false);
+    } catch (error) {
+      setloader(false);
+      console.error("Error updating data:", error.message);
+    }
+  };
+
   return (
     <section>
       <h1> ADD NEW MEETS</h1>

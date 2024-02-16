@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../firebase";
+import { UserAuth } from "../context/AuthContext";
 import "./Login.css";
+
 const Login = () => {
+  const { signIn } = UserAuth();
   const history = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [resetpass, setresetpass] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const navigateToSignUp = () => {
     history("/sign-up", {
+      replace: true,
+    });
+  };
+
+  const navigatetoForgot = () => {
+    history("/forgotPassward", {
       replace: true,
     });
   };
@@ -24,14 +37,15 @@ const Login = () => {
     password: "",
   };
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    signInWithEmailAndPassword(auth, values.email, values.password)
-      .then((userCredential) => {
-        history("/all-meetup");
-      })
-      .catch((error) => {
-        console.error("error", error);
-      });
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      await signIn(values.email, values.password);
+      history("/all-meetup");
+    } catch (error) {
+      setresetpass(true);
+      console.log(error);
+      alert(error);
+    }
   };
 
   return (
@@ -55,13 +69,23 @@ const Login = () => {
               <div className="error-message">
                 <ErrorMessage name="email" />
               </div>
-              <Field
-                className="login-input"
-                type="password"
-                placeholder="Password"
-                id="password"
-                name="password"
-              />
+              <div className="password-input-container">
+                <Field
+                  className="login-input1"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  id="password"
+                  name="password"
+                />
+                <button
+                  className="toggle-password-button"
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
+                </button>
+              </div>
+
               <div className="error-message">
                 <ErrorMessage name="password" />
               </div>
@@ -70,10 +94,24 @@ const Login = () => {
                 type="submit"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Loging in..." : "Log In"}
+                {isSubmitting ? "Logging in..." : "Log In"}
               </button>
+              {resetpass ? (
+                <div
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                  }}
+                  className="signup-link"
+                  onClick={navigatetoForgot}
+                >
+                  Forgot passward?
+                </div>
+              ) : null}
+
               <div className="signup-link" onClick={navigateToSignUp}>
-                Don't have an account? <a href="/sign-up">Sign Up</a>
+                Don't have an account? <span className="signUp"> Sign Up</span>
               </div>
             </Form>
           )}

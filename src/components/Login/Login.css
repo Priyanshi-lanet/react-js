@@ -1,26 +1,32 @@
 .login {
   min-height: 100vh;
 }
+
 .bg-image {
   background-image: url("https://source.unsplash.com/WEQbe2jBg40/600x1200");
   background-size: cover;
   background-position: center;
 }
+
 .login-heading {
   font-weight: 300;
 }
+
 .btn-login {
   font-size: 0.9rem;
   letter-spacing: 0.05rem;
   padding: 0.75rem 1rem;
 }
+
 .invalid {
   border-color: red !important;
 }
+
 .body {
   background-image: url("https://images.unsplash.com/photo-1608229063899-4fd8fb97969b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=800&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTcwNjUyMTYxNg&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1900");
   background-size: "cover";
 }
+
 .login-container {
   display: flex;
   justify-content: center;
@@ -48,15 +54,33 @@
   border: none;
   border-radius: 4px;
 }
-
+.login-input1 {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  margin-bottom: 8px;
+}
+.reset-input {
+  width: 20%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 4px;
+}
 .login-button {
   width: 100%;
   padding: 10px;
-  background-color: #e50914;
+  background-color: #f8b283;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+.signUp {
+  color: #f8b283;
 }
 .error-message {
   color: red;
@@ -65,12 +89,13 @@
 }
 
 .login-button:hover {
-  background-color: #ff0a16;
+  background-color: #f8b283;
 }
 
 .signup-link {
   margin-top: 10px;
   font-size: 14px;
+  display: flex;
 }
 
 .signup-link a {
@@ -80,4 +105,24 @@
 
 .signup-link a:hover {
   text-decoration: underline;
+}
+.password-input-container {
+  display: flex;
+  background-color: black;
+}
+
+.password-input-container .login-input {
+  flex: 1; /* Allow input field to grow to fill remaining space */
+  margin-right: 8px; /* Add margin between input field and button */
+  background-color: white; /* Align items vertically */
+}
+
+.password-input-container .toggle-password-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  background-color: white; /* Align items vertically */
+  border-top-right-radius: 4px;
+  margin-bottom: 8px;
+  border-bottom-right-radius: 4px;
 }
