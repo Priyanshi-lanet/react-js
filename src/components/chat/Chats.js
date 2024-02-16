@@ -33,10 +33,8 @@ const Chats = () => {
   }, [user]);
 
   const handleSelect = (params) => {
-    console.log("params", params);
     dispatch(getChatdata(params, user));
   };
-  console.log("user", user);
   return (
     <div className="chats">
       {Object.keys(chats).map((key) => {

@@ -10,8 +10,6 @@ const chatReducer = (state = initialState, action) => {
   switch (action.type) {
     case "CHANGE_USER":
       const { user, currentUser } = action.payload; // Destructure user and currentUser from action payload
-      console.log("currentUser.uid ", currentUser.uid);
-      console.log("user.data.id ", user);
       // Calculate the chatId based on user and currentUser
       const chatId =
         currentUser.uid > user.uid

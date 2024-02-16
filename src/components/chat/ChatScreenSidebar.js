@@ -6,7 +6,9 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { IoIosMore } from "react-icons/io";
 import Messages from "./Messages";
 import TextInput from "./TextInput";
+import { useSelector } from "react-redux";
 const ChatScreenSidebar = () => {
+  const data = useSelector((state) => state.chat);
   return (
     <div className="chatbar">
       <div className="chatInfo">
@@ -17,7 +19,7 @@ const ChatScreenSidebar = () => {
           <IoIosMore />
         </div>
       </div>
-      <Messages />
+      {data?.chatId && <Messages />}
 
       <TextInput />
     </div>

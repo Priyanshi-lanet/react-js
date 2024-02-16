@@ -39,9 +39,8 @@ const TextInput = () => {
 
   const handleSend = async () => {
     if (img) {
-      console.log("inside");
       const imageUrl = await getUrlFromFirebase(img);
-      console.log("image", imageUrl);
+
       const ChatsRef = doc(db, `chats/${data.chatId}`);
       await updateDoc(ChatsRef, {
         messages: arrayUnion({

@@ -73,7 +73,6 @@ const Searchbar = () => {
     }
   };
   const handleSelect = async (s_user) => {
-    console.log("s_user", s_user);
     const combinedId =
       user.uid > s_user.uid ? user.uid + s_user.uid : s_user.uid + user.uid;
 
@@ -91,7 +90,6 @@ const Searchbar = () => {
         },
         [`${combinedId}.date`]: serverTimestamp(),
       };
-      console.log("userer", user.uid);
       //updatett
       const userChatsRef = doc(db, `usersChats/${user.uid}`);
       await updateDoc(userChatsRef, updateData);
