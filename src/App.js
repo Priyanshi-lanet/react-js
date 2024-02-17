@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPass from "./components/Login/ForgotPass";
 import store from "./components/store/createStore";
 import ChatScreen from "./Pages/ChatScreen";
+import Userlist from "./Pages/Userlist";
 function App() {
   return (
     <div>
@@ -34,6 +35,7 @@ function App() {
               <Route path="/favourite" element={<Favourites />} />
               <Route path="/forgotPassward" element={<ForgotPass />} />
               <Route path="/chatScreen" element={<ChatScreen />} />
+              <Route path="/users" element={<Userlist />} />
             </Routes>
           </StoreProvider>
         </AuthContextProvider>

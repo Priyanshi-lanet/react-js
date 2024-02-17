@@ -104,6 +104,17 @@ function MainNavigation() {
                   ChatScreen
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/users"
+                  style={{
+                    color: color,
+                  }}
+                  onClick={() => setActiveLink("favourite")}
+                >
+                  users
+                </Link>
+              </li>
 
               <li>
                 <Link

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Loading from "../components/Loader/Loading";
-import { UserAuth } from "../components/context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCardList } from "../components/store/actions/card";
 import "../components/layout/MainNavigator.css";
