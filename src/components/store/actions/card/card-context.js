@@ -81,13 +81,11 @@ export function getCardList(searchTerm, userId) {
   };
 }
 export function collectGroupInfo(list, name) {
-  console.log("list", list, name);
   return (dispatch) => {
     let obj = {
       group_Name: name,
       group_List: list,
     };
-    console.log("obj".obj);
     dispatch({
       type: CREATE_GROUP,
       payload: obj,

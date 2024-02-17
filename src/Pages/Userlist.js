@@ -73,14 +73,10 @@ function Userlist() {
   };
 
   const handleCreateGroup = async () => {
-    // Perform action with selected contacts (e.g., create a group)
-    console.log("Selected Contacts:", selectedItems);
-    console.log("Group Name:", groupName);
-    // Reset selected items and group name after performing the action
+    dispatch(collectGroupInfo(selectedItems, groupName));
     setSelectedItems([]);
     setGroupName("");
-    await dispatch(collectGroupInfo(selectedItems, groupName));
-    // Close modal
+
     setIsModalOpen(false);
   };
 
@@ -97,7 +93,7 @@ function Userlist() {
       <div
         style={{
           width: dimensions.width,
-          backgroundColor: "pink",
+          backgroundColor: "white",
           height: dimensions.height,
         }}
       ></div>
@@ -172,7 +168,9 @@ function Userlist() {
             </div>
           </div>
         ))}
-        <button onClick={openModal}>Create Group</button>
+        {selectedItems?.length && (
+          <button onClick={openModal}>Create Group</button>
+        )}
       </div>
       {isModalOpen && (
         <div className="modal">
