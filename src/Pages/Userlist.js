@@ -54,9 +54,9 @@ function Userlist() {
         >
           <div
             style={{
-              display: "flex", // Add display:flex
-              flexDirection: "row", // Flex direction row
-              flex: 1, // Flex 1 to take remaining space
+              display: "flex",
+              flexDirection: "row",
+              flex: 1,
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -67,20 +67,36 @@ function Userlist() {
               style={{
                 borderRadius: "50%",
                 width: "30%",
-                height: "30%",
-                // alignSelf: "flex-start",
+                height: "60%",
               }}
             />
             <div
               style={{
-                display: "flex", // Add display:flex
-                flexDirection: "column", // Flex direction row
-                flex: 1, // Flex 1 to take remaining space
+                display: "flex",
+                flexDirection: "column",
+                flex: 1,
                 marginLeft: "10px",
+                overflow: "hidden", // Ensure text does not overflow
               }}
             >
-              <div> {meetup.name}</div>
-              <div> {meetup.email}</div>
+              <div
+                style={{
+                  flex: 1,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {meetup.name}
+              </div>
+              <div
+                style={{
+                  flex: 1,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {meetup.email}
+              </div>
             </div>
           </div>
         </div>
