@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../firebase";
-import { getCardList } from "../components/store/actions/card";
+import {
+  collectGroupInfo,
+  getCardList,
+} from "../components/store/actions/card";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoCheckbox } from "react-icons/io5";
 
 function Userlist() {
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.card.userList);
+  const groupList = useSelector((state) => state.card.groupList);
+  console.log("groupList", JSON.stringify(groupList, null, 2));
   const [isTouched, setIsTouched] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth / 2,
     height: window.innerHeight,
   });
+  const [groupName, setGroupName] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -45,8 +52,10 @@ function Userlist() {
     let newSelected = [];
 
     if (selectedIndex === -1) {
+      // Item not yet selected, add it to selectedItems
       newSelected = [...selectedItems, item];
     } else {
+      // Item already selected, remove it from selectedItems
       newSelected = selectedItems.filter(
         (selectedItem) => selectedItem !== item
       );
@@ -63,6 +72,26 @@ function Userlist() {
     setIsTouched(false);
   };
 
+  const handleCreateGroup = async () => {
+    // Perform action with selected contacts (e.g., create a group)
+    console.log("Selected Contacts:", selectedItems);
+    console.log("Group Name:", groupName);
+    // Reset selected items and group name after performing the action
+    setSelectedItems([]);
+    setGroupName("");
+    await dispatch(collectGroupInfo(selectedItems, groupName));
+    // Close modal
+    setIsModalOpen(false);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div style={{ display: "flex" }}>
       <div
@@ -75,7 +104,7 @@ function Userlist() {
       <div
         style={{
           width: dimensions.width,
-          backgroundColor: "blue",
+          backgroundColor: "grey",
           height: dimensions.height,
         }}
       >
@@ -143,7 +172,25 @@ function Userlist() {
             </div>
           </div>
         ))}
+        <button onClick={openModal}>Create Group</button>
       </div>
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={closeModal}>
+              &times;
+            </span>
+            <h2>Create Group</h2>
+            <input
+              type="text"
+              placeholder="Group Name"
+              value={groupName}
+              onChange={(e) => setGroupName(e.target.value)}
+            />
+            <button onClick={handleCreateGroup}>Create</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

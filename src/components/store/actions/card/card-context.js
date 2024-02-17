@@ -1,5 +1,6 @@
 export const GET_CARD_LIST = "GET_CARD_LIST";
 export const GET_USER_LIST = "GET_USER_LIST";
+export const CREATE_GROUP = "CREATE_GROUP";
 
 export function getCardList(searchTerm, userId) {
   console.log("insideeee");
@@ -77,5 +78,19 @@ export function getCardList(searchTerm, userId) {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+  };
+}
+export function collectGroupInfo(list, name) {
+  console.log("list", list, name);
+  return (dispatch) => {
+    let obj = {
+      group_Name: name,
+      group_List: list,
+    };
+    console.log("obj".obj);
+    dispatch({
+      type: CREATE_GROUP,
+      payload: obj,
+    });
   };
 }
