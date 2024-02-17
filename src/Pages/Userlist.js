@@ -5,6 +5,11 @@ import { getCardList } from "../components/store/actions/card";
 
 function Userlist() {
   const dispatch = useDispatch();
+
+  const userList = useSelector((state) => state.card.userList);
+  const numRows = Math.ceil(userList.length / 3); // Calculate number of rows needed
+  const containerHeight = numRows * 50 + 20 * (numRows - 1);
+
   useEffect(() => {
     // setLoading(true);
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -17,18 +22,17 @@ function Userlist() {
     return () => unsubscribe();
   }, []);
 
-  const userList = useSelector((state) => state.card.userList);
-  const numRows = Math.ceil(userList.length / 3); // Calculate number of rows needed
-  const containerHeight = numRows * 50 + 20 * (numRows - 1);
+  const handleOnClick = (data) => {
+    console.log("data", data);
+  };
   return (
     <div
       style={{
         color: "white",
         display: "flex",
         flexWrap: "wrap",
-
         height: `${containerHeight}px`, // Set height dynamically
-        width: "90%",
+        width: "100%",
       }}
     >
       {userList.map((meetup, index) => (
@@ -42,23 +46,43 @@ function Userlist() {
             border: "1px solid #ccc",
             borderRadius: "5px",
             flex: 1,
-            flexDirection: "row",
             backgroundColor: "grey",
+            display: "flex",
+            flexDirection: "column",
           }}
+          onClick={() => handleOnClick(meetup)}
         >
-          <div style={{ flex: "row" }}>
+          <div
+            style={{
+              display: "flex", // Add display:flex
+              flexDirection: "row", // Flex direction row
+              flex: 1, // Flex 1 to take remaining space
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <img
               src={meetup.profile}
               alt="Profile"
-              style={{ borderRadius: "50%", width: "30%", height: "80%" }}
+              style={{
+                borderRadius: "50%",
+                width: "30%",
+                height: "30%",
+                // alignSelf: "flex-start",
+              }}
             />
-
-            <div>
-              <div>Name: {meetup.name}</div>
-              <div>Email: {meetup.email}</div>
+            <div
+              style={{
+                display: "flex", // Add display:flex
+                flexDirection: "column", // Flex direction row
+                flex: 1, // Flex 1 to take remaining space
+                marginLeft: "10px",
+              }}
+            >
+              <div> {meetup.name}</div>
+              <div> {meetup.email}</div>
             </div>
           </div>
-          {/* <button onClick={() => handleOnClick(meetup)}>Click</button> */}
         </div>
       ))}
     </div>
