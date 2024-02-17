@@ -28,13 +28,14 @@ function Meetupitem(props) {
   }
 
   const handleClick = (data) => {
+    console.log("dd", data.date);
     let obj = {
       id: data.id,
       title: data.title,
       description: data.description,
       image: data.image,
       address: data.address,
-      date: new Date(data.date),
+      date: data.date ? new Date(data.date) : data.date,
     };
     history("/new-meetup", {
       state: {

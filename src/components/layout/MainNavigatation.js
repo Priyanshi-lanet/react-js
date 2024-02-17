@@ -112,7 +112,7 @@ function MainNavigation() {
                   }}
                   onClick={() => setActiveLink("favourite")}
                 >
-                  users
+                  Users
                 </Link>
               </li>
 

@@ -18,6 +18,7 @@ function Newmeetups(props) {
   };
 
   const onSubmit = (values, { resetForm }) => {
+    console.log("values", values);
     if (isEditMode) {
       props.onUpdateMeetup(values);
     } else {
@@ -25,12 +26,6 @@ function Newmeetups(props) {
     }
     resetForm();
   };
-
-  // useEffect(() => {
-  //   if (isEditMode && formRef?.current?.values?.date) {
-  //     formRef?.current?.setFieldValue("date", new Date(editValues.date)); // Parse the ISO 8601 string into a Date object
-  //   }
-  // }, [isEditMode]);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
@@ -80,21 +75,24 @@ function Newmeetups(props) {
               )}
             </div>
             {
-              <div className="control">
-                <label htmlFor="date" style={{ color: "grey" }}>
-                  Date
-                </label>
-                <DatePicker
-                  id="date"
-                  selected={values.date}
-                  onChange={(date) => setFieldValue("date", date)}
-                  className="custom-datepicker"
-                  onBlur={() => setFieldTouched("date", true)}
-                />
-                {errors.date && touched.date && (
-                  <div className="error-message">{errors.date}</div>
-                )}
-              </div>
+              (console.log("values.date", values.date),
+              (
+                <div className="control">
+                  <label htmlFor="date" style={{ color: "grey" }}>
+                    Date
+                  </label>
+                  <DatePicker
+                    id="date"
+                    selected={values.date}
+                    onChange={(date) => setFieldValue("date", date)}
+                    className="custom-datepicker"
+                    onBlur={() => setFieldTouched("date", true)}
+                  />
+                  {errors.date && touched.date && (
+                    <div className="error-message">{errors.date}</div>
+                  )}
+                </div>
+              ))
             }
 
             <div className="control">
