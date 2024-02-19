@@ -107,17 +107,17 @@
 
     .sidebar {
       flex: 0.3;
-      background-color: #0288d1;
+      background-color: #2a324b;
       position: relative;
 
       .navbar {
         display: flex;
         align-items: center;
-        background-color: #01579b;
+        background-color: #232b42;
         height: 50px;
         padding: 10px;
         justify-content: space-between;
-        color: #e1f5fe;
+        color: #808fbe;
 
         .logo1 {
           font-weight: bold;
@@ -181,7 +181,7 @@
         cursor: pointer;
 
         &:hover {
-          background-color: #01579b;
+          background-color: #2a324b;
         }
 
         img {
@@ -220,7 +220,7 @@
         .messageContent {
           align-items: flex-end;
           p {
-            background-color: #0288d1;
+            background-color: #2a324b;
             color: white;
             border-radius: 10px 0px 10px 10px;
           }
@@ -233,7 +233,7 @@
 
       .chatInfo {
         height: 50px;
-        background-color: #b3e5fc;
+        background-color: #303e6b;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -252,7 +252,7 @@
       }
 
       .messages {
-        background-color: #e1f5fe;
+        background-color: #808fbe;
         padding: 10px;
         height: calc(100% - 110px);
         overflow: scroll;
@@ -299,7 +299,7 @@
             .messageContent {
               align-items: flex-end;
               p {
-                background-color: #0288d1;
+                background-color: #2a324b;
                 color: white;
                 border-radius: 10px 0px 10px 10px;
               }
@@ -343,7 +343,7 @@
             border: none;
             padding: 10px 15px;
             color: white;
-            background-color: #0288d1;
+            background-color: #2a324b;
             cursor: pointer;
           }
         }

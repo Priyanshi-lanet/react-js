@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../firebase";
-import {
-  collectGroupInfo,
-  getCardList,
-  getGroupList,
-} from "../components/store/actions/card";
-import { MdCheckBoxOutlineBlank } from "react-icons/md";
-import { IoCheckbox } from "react-icons/io5";
+import { getCardList, getGroupList } from "../components/store/actions/card";
 import { UserAuth } from "../components/context/AuthContext";
+import UserList from "../components/commonComponent/UserList";
+import "./Userlist.css";
+// import { userDetails } from "../components/commonComponent/userDetails";
 
 function Userlist() {
   const dispatch = useDispatch();
@@ -16,12 +13,12 @@ function Userlist() {
 
   const userList = useSelector((state) => state.card.userList);
   const groupList = useSelector((state) => state.card.groupList);
-
+  const [showUserList, setshowUserList] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth / 2,
-    height: window.innerHeight,
+    // height: window.innerHeight,
   });
   const [groupName, setGroupName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,7 +27,7 @@ function Userlist() {
     const handleResize = () => {
       setDimensions({
         width: window.innerWidth / 2,
-        height: window.innerHeight,
+        // height: window.innerHeight,
       });
     };
     window.addEventListener("resize", handleResize);
@@ -86,6 +83,9 @@ function Userlist() {
   };
 
   const openModal = () => {
+    setshowUserList((v) => !v);
+  };
+  const createGroup = () => {
     setIsModalOpen(true);
   };
 
@@ -106,136 +106,128 @@ function Userlist() {
         style={{
           width: dimensions.width,
           backgroundColor: "white",
-          height: dimensions.height,
-          backgroundColor: "grey",
+          // height: dimensions.height,
+          backgroundColor: "#242B42",
         }}
       >
         {/* for group */}
-        <div style={{ backgroundColor: "yellow", borderRadius: "12px" }}>
+        <div style={{ borderRadius: "12px" }}>
           {groupList.map((groupObj) => {
             return (
               <>
-                {Object.values(groupObj).map(
-                  (group) =>
-                    group.group_Name && (
-                      <>
-                        <div className="card"> + craete group</div>
-                        <div
-                          style={{ backgroundColor: "red" }}
-                          className="card"
-                          onClick={() => {
-                            getGroup(group);
+                {Object.values(groupObj).map((group, index) => (
+                  <>
+                    {index === 0 && ( // Check if it's the first index
+                      <div
+                        className="card"
+                        style={{
+                          backgroundColor: "#2E3650",
+                          flex: 1,
+                          alignItems: "center",
+                          display: "flex",
+                          fontFamily: "roboto",
+                          fontSize: "20px",
+                          justifyContent: "center",
+                          color: "#7F88A9",
+                        }}
+                        onClick={openModal}
+                      >
+                        + Create group
+                      </div>
+                    )}
+                    {group.group_Name && (
+                      <div
+                        style={{ backgroundColor: "#2E3650", color: "#7F88A9" }}
+                        className="card"
+                        onClick={() => {
+                          getGroup(group);
+                        }}
+                        key={group.group_Name}
+                      >
+                        <h2
+                          style={{
+                            fontFamily: "roboto",
+                            fontSize: "15px",
+                            overflow: "hidden",
+                            // borderRadius: "15px",
+                            borderWidth: "1px",
+                            borderColor: "black",
+                            fontWeight: "bold",
+                            color: "#B1B9D8",
                           }}
-                          key={group.group_Name}
                         >
-                          <h2
-                            style={{
-                              fontFamily: "roboto",
-                              fontSize: "15px",
-                              overflow: "hidden",
-                            }}
-                          >
-                            {group.group_Name}
-                          </h2>
-                        </div>
-                      </>
-                    )
-                )}
+                          {group.group_Name}
+                        </h2>
+                        <h2
+                          style={{
+                            fontFamily: "roboto",
+                            fontSize: "10px",
+                            overflow: "hidden",
+                            color: "#7F88A9",
+                          }}
+                        >
+                          {"total member : " + group?.group_List?.length}
+                        </h2>
+                      </div>
+                    )}
+                  </>
+                ))}
               </>
             );
           })}
         </div>
-        {selectedGroup &&
-          selectedGroup.group_List.map((i, index) => (
-            <div
-              className="email-card"
-              style={{
-                padding: "10px",
-                borderRadius: "12px",
-                borderWidth: "1px",
-              }}
-            >
-              {i.email}
-            </div>
-          ))}
       </div>
 
       <div
         style={{
           width: dimensions.width,
-          backgroundColor: "grey",
+          backgroundColor: "#242B42",
           height: dimensions.height,
         }}
       >
         {/* // for users */}
-        {userList.map((item, index) => (
-          <div
-            className={`touchable ${isTouched ? "touched" : ""}`}
-            style={{
-              paddingTop: "10px",
-              scroll: "true",
-              paddingLeft: "10px",
-              paddingRight: "10px",
-            }}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-            onClick={() => handleOnClick(item)}
-            key={index}
-          >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                backgroundColor: selectedItems.includes(item)
-                  ? "lightblue"
-                  : "white",
-                borderRadius: "10px",
-                padding: "10px", // Add padding to the container
-              }}
-            >
-              <img
-                src={item.profile}
-                alt="Profile"
-                style={{
-                  borderRadius: "50%",
-                  width: "50px", // Adjust width and height as needed
-                  height: "50px",
-                  marginRight: "10px", // Add margin to the right for spacing
-                }}
-              />
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap", // Ensure text does not wrap
-                  }}
-                >
-                  {item.name}
-                </div>
-                <div
-                  style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {item.email}
-                </div>
-              </div>
-              {selectedItems.includes(item) ? (
-                <IoCheckbox /> // Show checkbox if item is selected
-              ) : (
-                <MdCheckBoxOutlineBlank /> // Show blank checkbox if item is not selected
-              )}
-            </div>
+        {showUserList ? (
+          <UserList
+            userList={userList}
+            selectedItems={selectedItems}
+            isTouched={true} // Example value, you can change it as needed
+            handleTouchStart={handleTouchStart}
+            handleTouchEnd={handleTouchEnd}
+            handleOnClick={handleOnClick}
+            craetegroup={createGroup}
+          />
+        ) : (
+          <div style={{ marginTop: "150px" }}>
+            {selectedGroup && (
+              <h2 style={{ marginLeft: "10px", color: "#B1B9D8" }}>
+                Associated user
+              </h2>
+            )}
+            {selectedGroup &&
+              selectedGroup.group_List.map((i, index) => (
+                <>
+                  <h2 style={{ color: "#7F88A9", marginLeft: "10px" }}>
+                    {i.name}
+                  </h2>
+                  <div
+                    className="email-card"
+                    style={{
+                      padding: "10px",
+                      marginTop: "10px",
+                      borderRadius: "8px",
+                      borderWidth: "1px",
+                      marginLeft: "10px",
+                      color: "#7F88A9",
+                    }}
+                  >
+                    {i.email}
+                  </div>
+                </>
+              ))}
           </div>
-        ))}
-        {/* {selectedItems?.length && (
-          <button onClick={openModal}>Create Group</button>
-        )} */}
+        )}
       </div>
+
       {isModalOpen && (
         <div className="modal">
           <div className="modal-content">
