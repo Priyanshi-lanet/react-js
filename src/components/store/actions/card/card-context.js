@@ -1,6 +1,7 @@
 export const GET_CARD_LIST = "GET_CARD_LIST";
 export const GET_USER_LIST = "GET_USER_LIST";
 export const CREATE_GROUP = "CREATE_GROUP";
+export const GET_GROUP_LIST = "GET_GROUP_LIST";
 
 export function getCardList(searchTerm, userId) {
   console.log("insideeee");
@@ -17,11 +18,7 @@ export function getCardList(searchTerm, userId) {
           id: key,
           ...data[key],
         }));
-
         const filtered = meetups.filter((item) => item.id === userId);
-        // console.log("filtered", JSON.stringify(filtered, null, 2));
-        // console.log("meetups", JSON.stringify(meetups, null, 2));
-
         const transformedCardDetails = filtered.map((item) => {
           const newObj = {};
           newObj[item.id] = {
@@ -72,6 +69,31 @@ export function getCardList(searchTerm, userId) {
         });
         dispatch({
           type: GET_USER_LIST,
+          payload: meetups,
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+}
+export function getGroupList(searchTerm, userId) {
+  return (dispatch) => {
+    fetch("https://reactjs-834f1-default-rtdb.firebaseio.com/GroupList.json")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const meetups = Object.keys(data).map((key) => ({
+          id: key,
+          ...data[key],
+        }));
+
+        dispatch({
+          type: GET_GROUP_LIST,
           payload: meetups,
         });
       })

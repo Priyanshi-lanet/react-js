@@ -75,6 +75,9 @@ h2 {
   display: flex;
   flex-wrap: wrap;
 }
+.email-card {
+  background-color: pink;
+}
 
 .card {
   width: calc(20% - 20px); /* 20% width for each card with 20px margin */

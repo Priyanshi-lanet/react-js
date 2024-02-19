@@ -7,6 +7,7 @@ const initialState = {
   totalCount: 0,
   totalList: 0,
   groupList: [],
+  totalGroup: 0,
 };
 const cardReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -24,11 +25,11 @@ const cardReducer = (state = initialState, action) => {
         totalList: action.payload.length,
       };
     }
-    case Actions.CREATE_GROUP: {
+    case Actions.GET_GROUP_LIST: {
       return {
         ...state,
-        groupList: [...state.groupList, action.payload],
-        totalCount: state.totalCount + 1,
+        groupList: action.payload,
+        totalGroup: action.payload.length,
       };
     }
     default: {

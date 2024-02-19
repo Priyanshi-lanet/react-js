@@ -7,7 +7,7 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth, database } from "../../firebase";
-import { set, ref } from "firebase/database";
+import { set, ref, push } from "firebase/database";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 const UserContext = createContext();
 
@@ -60,6 +60,26 @@ export const AuthContextProvider = ({ children }) => {
       throw error;
     }
   };
+  const BuildCoalition = async (groupList, name) => {
+    console.log("go", groupList);
+    console.log("name", name);
+    const userId = user.uid;
+
+    try {
+      let obj = {
+        group_Name: name,
+        group_List: groupList,
+      };
+
+      const newGroupRef = push(ref(database, `GroupList/${userId}`), obj);
+      const newGroupId = newGroupRef.key;
+
+      return newGroupId;
+    } catch (error) {
+      console.error("Error creating user:", error.message);
+      throw error;
+    }
+  };
 
   const signIn = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
@@ -82,7 +102,14 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ createUser, user, logout, signIn, forgotPassward }}
+      value={{
+        createUser,
+        user,
+        logout,
+        signIn,
+        forgotPassward,
+        BuildCoalition,
+      }}
     >
       {children}
     </UserContext.Provider>

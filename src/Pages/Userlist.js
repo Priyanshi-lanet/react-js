@@ -4,15 +4,19 @@ import { auth } from "../firebase";
 import {
   collectGroupInfo,
   getCardList,
+  getGroupList,
 } from "../components/store/actions/card";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoCheckbox } from "react-icons/io5";
+import { UserAuth } from "../components/context/AuthContext";
 
 function Userlist() {
   const dispatch = useDispatch();
+  const { BuildCoalition, user } = UserAuth();
+
   const userList = useSelector((state) => state.card.userList);
   const groupList = useSelector((state) => state.card.groupList);
-  console.log("groupList", JSON.stringify(groupList, null, 2));
+
   const [isTouched, setIsTouched] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [dimensions, setDimensions] = useState({
@@ -29,9 +33,7 @@ function Userlist() {
         height: window.innerHeight,
       });
     };
-
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -41,6 +43,7 @@ function Userlist() {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         dispatch(getCardList("", user.uid));
+        dispatch(getGroupList("", user.uid));
       }
     });
 
@@ -73,7 +76,9 @@ function Userlist() {
   };
 
   const handleCreateGroup = async () => {
-    dispatch(collectGroupInfo(selectedItems, groupName));
+    // dispatch(collectGroupInfo(selectedItems, groupName));
+    await BuildCoalition(selectedItems, groupName);
+
     setSelectedItems([]);
     setGroupName("");
 
@@ -87,7 +92,14 @@ function Userlist() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const [selectedGroup, setSelectedGroup] = useState(null);
 
+  const handleCardClick = (group) => {
+    setSelectedGroup(group);
+  };
+  const getGroup = (obj) => {
+    setSelectedGroup(obj);
+  };
   return (
     <div style={{ display: "flex" }}>
       <div
@@ -95,8 +107,59 @@ function Userlist() {
           width: dimensions.width,
           backgroundColor: "white",
           height: dimensions.height,
+          backgroundColor: "grey",
         }}
-      ></div>
+      >
+        {/* for group */}
+        <div style={{ backgroundColor: "yellow", borderRadius: "12px" }}>
+          {groupList.map((groupObj) => {
+            return (
+              <>
+                {Object.values(groupObj).map(
+                  (group) =>
+                    group.group_Name && (
+                      <>
+                        <div className="card"> + craete group</div>
+                        <div
+                          style={{ backgroundColor: "red" }}
+                          className="card"
+                          onClick={() => {
+                            getGroup(group);
+                          }}
+                          key={group.group_Name}
+                        >
+                          <h2
+                            style={{
+                              fontFamily: "roboto",
+                              fontSize: "15px",
+                              overflow: "hidden",
+                            }}
+                          >
+                            {group.group_Name}
+                          </h2>
+                        </div>
+                      </>
+                    )
+                )}
+              </>
+            );
+          })}
+        </div>
+        {selectedGroup &&
+          selectedGroup.group_List.map((i, index) => (
+            <div
+              className="email-card"
+              style={{
+                padding: "10px",
+                borderRadius: "12px",
+                borderWidth: "1px",
+              }}
+            >
+              {i.email}
+            </div>
+          ))}
+      </div>
+
       <div
         style={{
           width: dimensions.width,
@@ -104,6 +167,7 @@ function Userlist() {
           height: dimensions.height,
         }}
       >
+        {/* // for users */}
         {userList.map((item, index) => (
           <div
             className={`touchable ${isTouched ? "touched" : ""}`}
@@ -168,9 +232,9 @@ function Userlist() {
             </div>
           </div>
         ))}
-        {selectedItems?.length && (
+        {/* {selectedItems?.length && (
           <button onClick={openModal}>Create Group</button>
-        )}
+        )} */}
       </div>
       {isModalOpen && (
         <div className="modal">
